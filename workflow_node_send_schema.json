@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_send_schema.json",
+  "title": "Workflow Send Node",
+  "description": "Workflow Send Node",
+  "$comment": "Workflow Send Node",
+  "$definitions": {
+    "send_node_props": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^[a-z0-9-_]+$",
+          "description": "slug of template used for notification content"
+        },
+        "channels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "email",
+              "androidpush",
+              "iospush",
+              "webpush",
+              "inbox",
+              "whatsapp",
+              "slack",
+              "ms_teams"
+            ]
+          },
+          "description": "specific channels to use when sending multi-channel notification"
+        },
+        "channels_expr": {
+          "type": "string",
+          "minLength": 2,
+          "description": "jq-expression for preparing channel list, if channels are to be derived at runtime using payload"
+        },
+        "success": {
+          "type": "string",
+          "description": "success metric (delivered/seen/interaction/<user-event>)"
+        },
+        "mandatory_channels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "email",
+              "androidpush",
+              "iospush",
+              "webpush",
+              "inbox",
+              "whatsapp",
+              "slack",
+              "ms_teams"
+            ]
+          },
+          "description": "applicable for smart-channel-routing, notification on mandatory channels will be sent immediately"
+        },
+        "ttl_value": {
+          "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+        }
+      },
+      "required": [
+        "template"
+      ],
+      "additionalProperties": false
+    },
+    "send_multi_channel_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_smart_channel_routing_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_mobile_push_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_email_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_sms_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_whatsapp_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_inbox_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_webpush_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_slack_props": {
+      "$ref": "#/$definitions/send_node_props"
+    },
+    "send_ms_teams_props": {
+      "$ref": "#/$definitions/send_node_props"
+    }
+  }
+}

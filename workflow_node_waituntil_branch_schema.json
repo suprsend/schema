@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_waituntil_schema.json",
+  "title": "Workflow waituntil Node",
+  "description": "Workflow waituntil Node",
+  "$comment": "Workflow waituntil Node",
+  "$definitions": {
+    "waituntil_branches": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": [
+        {
+          "$ref": "#/$definitions/waituntil_event_branch"
+        },
+        {
+          "$ref": "#/$definitions/waituntil_timer_branch"
+        }
+      ]
+    },
+    "waituntil_event_branch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "is_default": {
+          "type": "boolean",
+          "const": false
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/future_events_condition_def"
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "description": "nodes inside the branch",
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+          }
+        }
+      },
+      "required": [
+        "conditions"
+      ],
+      "additionalProperties": false
+    },
+    "waituntil_timer_branch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "is_default": {
+          "type": "boolean",
+          "const": true
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_condition_def"
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "description": "nodes inside the branch",
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+          }
+        }
+      },
+      "required": [
+        "conditions"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

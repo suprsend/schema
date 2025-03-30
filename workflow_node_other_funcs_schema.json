@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json",
+  "title": "Workflow Nodes others",
+  "description": "Workflow Nodes others",
+  "$comment": "Workflow Nodes others",
+  "$definitions": {
+    "node_delay_props": {
+      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_component_props"
+    },
+    "transform_props": {
+      "type": "object",
+      "properties": {
+        "variables": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Literal string. key for the variable"
+              },
+              "value_lang": {
+                "type": "string",
+                "description": "language to use to derive value at runtime",
+                "enum": [
+                  "jsonnet",
+                  "handlebars"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "description": "script in selected language to derive the value of variable"
+              }
+            },
+            "required": [
+              "key",
+              "value_lang",
+              "value"
+            ]
+          }
+        }
+      },
+      "required": [
+        "variables"
+      ],
+      "additionalProperties": false
+    },
+    "invokeworkflow_props": {
+      "type": "object",
+      "properties": {
+        "workflow": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[a-z0-9-_]+$",
+          "description": "slug of workflow to invoke"
+        },
+        "actor_selection": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "",
+            "recipient",
+            "actor",
+            "expression"
+          ],
+          "description": "where to pick actor from for invoke-workflow payload"
+        },
+        "actor_expression": {
+          "type": "string",
+          "minLength": 1,
+          "description": "if actor_selection=expression, a JSONNET expression to derive actor at runtime"
+        },
+        "recipient_selection": {
+          "type": "string",
+          "enum": [
+            "recipient",
+            "actor",
+            "expression"
+          ],
+          "description": "where to pick recipient from for invoke-workflow payload"
+        },
+        "recipient_expression": {
+          "type": "string",
+          "minLength": 1,
+          "description": "if recipient_selection=expression, a JSONNET expression to derive recipient at runtime"
+        },
+        "data": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "JSONNET expression to derive data field for invoke-workflow payload"
+        },
+        "append_current_run_data": {
+          "type": "boolean",
+          "description": "should current workflow-run data be merged with the data field"
+        }
+      },
+      "required": [
+        "workflow",
+        "recipient_selection"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "actor_selection"
+            ],
+            "properties": {
+              "actor_selection": {
+                "const": "expression"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "actor_expression"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recipient_selection": {
+                "const": "expression"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "recipient_expression"
+            ]
+          }
+        }
+      ]
+    },
+    "userupdate_props": {
+      "type": "object",
+      "properties": {
+        "user_selection": {
+          "type": "string",
+          "enum": [
+            "actor",
+            "recipient"
+          ],
+          "description": "select which user to update"
+        },
+        "properties": {
+          "type": "string",
+          "minLength": 1,
+          "description": "JSONNET script that at runtime evaluates to a map/dictionary"
+        }
+      },
+      "required": [
+        "user_selection",
+        "properties"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

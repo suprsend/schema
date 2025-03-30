@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_timewindow_schema.json",
+  "title": "Workflow Timewindow Node",
+  "description": "Workflow Timewindow Node",
+  "$comment": "Workflow Timewindow Node",
+  "type": "object",
+  "properties": {
+    "windows": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Array of windows defined using a structure which emulates a Recurrence rule",
+      "items": {
+        "type": "object",
+        "properties": {
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly_mo2fr",
+              "weekly",
+              "monthly"
+            ]
+          },
+          "weekdays": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "su",
+                "mo",
+                "tu",
+                "we",
+                "th",
+                "fr",
+                "sa"
+              ]
+            },
+            "description": "if frequency=weekly, then which days to be included"
+          },
+          "monthdays": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "pos": {
+                  "type": "integer",
+                  "minimum": -31,
+                  "maximum": 31,
+                  "description": "day number. if used in combination with weekday, then value would range from [-5, 5]"
+                },
+                "day": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "enum": [
+                    null,
+                    "",
+                    "su",
+                    "mo",
+                    "tu",
+                    "we",
+                    "th",
+                    "fr",
+                    "sa"
+                  ]
+                }
+              },
+              "required": [
+                "pos"
+              ],
+              "additionalProperties": false,
+              "if": {
+                "required": [
+                  "day"
+                ],
+                "properties": {
+                  "day": {
+                    "enum": [
+                      "su",
+                      "mo",
+                      "tu",
+                      "we",
+                      "th",
+                      "fr",
+                      "sa"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "pos": {
+                    "type": "integer",
+                    "minimum": -5,
+                    "maximum": 5
+                  }
+                }
+              }
+            },
+            "description": "if frequency=monthly, then which days to be included. Here, day can represent two formats like 2 (meaning 2nd day of month) OR (2,'mo') (meaning 2nd monday of the month)"
+          },
+          "stime": {
+            "type": "string",
+            "description": "clock start time component of window (format: Hour:Minute) (e.g. 08:00)"
+          },
+          "etime": {
+            "type": "string",
+            "description": "clock end time component of window (format: Hour:Minute) (e.g. 16:00)"
+          }
+        },
+        "required": [
+          "frequency"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "frequency": {
+              "const": "weekly"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "weekdays"
+          ]
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "frequency": {
+                "const": "monthly"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "monthdays"
+            ]
+          }
+        }
+      }
+    },
+    "tz_selection": {
+      "type": "string",
+      "enum": [
+        null,
+        "fixed",
+        "recipient"
+      ],
+      "description": "While calculating datetime from recurrence rule, where to pick timezone from. If missing/null, uses fixed timezone"
+    },
+    "tz_fixed": {
+      "type": "string",
+      "description": "Fixed timezone (e.g America/New_York) for calculating the datetime in recurrence rule. If missing uses UTC"
+    }
+  },
+  "required": [
+    "windows"
+  ],
+  "additionalProperties": false
+}

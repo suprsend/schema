@@ -1,0 +1,623 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_tree_schema.json",
+  "title": "Workflow Node Tree",
+  "description": "Workflow Node Tree",
+  "$comment": "Workflow Node Tree",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "description": "Array of nodes, at least one must be of types ['send_*', 'httpapi_*'] somewhere in the tree",
+      "items": {
+        "$ref": "#/$definitions/node_def"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "nodes"
+  ],
+  "additionalProperties": false,
+  "$definitions": {
+    "node_def": {
+      "type": "object",
+      "properties": {
+        "node_type": {
+          "type": "string",
+          "enum": [
+            "delay",
+            "timewindow",
+            "batch",
+            "digest",
+            "httpapi_webhook",
+            "httpapi_fetch",
+            "send_multi_channel",
+            "send_smart_channel_routing",
+            "send_mobile_push",
+            "send_email",
+            "send_sms",
+            "send_whatsapp",
+            "send_inbox",
+            "send_webpush",
+            "send_slack",
+            "send_ms_teams",
+            "transform",
+            "invokeworkflow",
+            "userupdate",
+            "subscriberlistoperation_adduser",
+            "subscriberlistoperation_removeuser",
+            "objectoperation_addsubscription",
+            "objectoperation_removesubscription",
+            "branch",
+            "branch_waituntil"
+          ],
+          "description": "The type of the Node"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "description": "The name of the Node"
+        },
+        "description": {
+          "type": "string",
+          "description": "The name of the Node"
+        },
+        "output_ref": {
+          "type": "string",
+          "description": "Reference/slug of the Node"
+        },
+        "properties": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "node_type"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "delay"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_component_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "timewindow"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_timewindow_schema.json"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "batch"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_batch_schema.json"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "digest"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_digest_schema.json"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "httpapi_fetch"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_httpapi_schema.json#/$definitions/httpapi_fetch_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "httpapi_webhook"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_httpapi_schema.json#/$definitions/httpapi_webhook_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_multi_channel"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_multi_channel_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_smart_channel_routing"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_smart_channel_routing_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_mobile_push"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_mobile_push_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_email"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_email_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_sms"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_sms_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_whatsapp"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_whatsapp_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_inbox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_inbox_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_webpush"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_webpush_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_slack"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_slack_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "send_ms_teams"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_ms_teams_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "transform"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/transform_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "invokeworkflow"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "userupdate"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/userupdate_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "subscriberlistoperation_adduser"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_adduser_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "subscriberlistoperation_removeuser"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_removeuser_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "objectoperation_addsubscription"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_objectoperation_schema.json#/$definitions/objectoperation_addsubscription_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "objectoperation_removesubscription"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow_node_objectoperation_schema.json#/$definitions/objectoperation_removesubscription_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "branch"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "branches"
+            ],
+            "properties": {
+              "branches": {
+                "$ref": "https://schema.suprsend.com/workflow_node_branch_schema.json#/$definitions/temp_branch"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "branch_waituntil"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "branches"
+            ],
+            "properties": {
+              "branches": {
+                "$ref": "https://schema.suprsend.com/workflow_node_branch_schema.json#/$definitions/temp_branch"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tree_validator": {
+    "comment": "to be added at tree->nodes level",
+    "type": "object",
+    "properties": {},
+    "anyOf": [
+      {
+        "properties": {
+          "nodes": {
+            "contains": {
+              "properties": {
+                "node_type": {
+                  "enum": [
+                    "httpapi_webhook",
+                    "httpapi_fetch",
+                    "send_multi_channel",
+                    "send_smart_channel_routing",
+                    "send_mobile_push",
+                    "send_email",
+                    "send_sms",
+                    "send_whatsapp",
+                    "send_inbox",
+                    "send_webpush",
+                    "send_slack",
+                    "send_ms_teams"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "properties": {
+          "nodes": {
+            "contains": {
+              "properties": {
+                "node_type": {
+                  "enum": [
+                    "branch_waituntil",
+                    "branch"
+                  ]
+                },
+                "branches": {
+                  "contains": {
+                    "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/branches_with_mandatory_nodes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

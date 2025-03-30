@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_objectoperation_schema.json",
+  "title": "Workflow ObjectOperation Node",
+  "description": "Workflow ObjectOperation Node",
+  "$comment": "Workflow ObjectOperation Node",
+  "$definitions": {
+    "objectoperation_props": {
+      "type": "object",
+      "properties": {
+        "is_object_id_dynamic": {
+          "type": "boolean",
+          "default": false,
+          "description": "If dynamic, object_type/id static literal or a handlebars expression"
+        },
+        "object_type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "static literal OR a handlebars expression (if dynamic)"
+        },
+        "object_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "static literal OR a handlebars expression (if dynamic)"
+        },
+        "create_object_if_missing": {
+          "type": "boolean",
+          "description": "applicable when op=add_subscription. should object be created in doesn't exist?"
+        },
+        "user_selection": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "actor",
+              "recipient"
+            ]
+          }
+        },
+        "subscription_properties": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "subscription properties. JSONNET expression that evaluates to a map/dictionary"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "user_selection"
+      ],
+      "additionalProperties": false
+    },
+    "objectoperation_addsubscription_props": {
+      "$ref": "#/$definitions/objectoperation_props",
+      "op": {
+        "type": "string",
+        "const": "add_subscription"
+      }
+    },
+    "objectoperation_removesubscription_props": {
+      "$ref": "#/$definitions/objectoperation_props",
+      "op": {
+        "type": "string",
+        "const": "remove_subscription"
+      },
+      "create_object_if_missing": {
+        "type": "boolean",
+        "default": false
+      }
+    }
+  }
+}

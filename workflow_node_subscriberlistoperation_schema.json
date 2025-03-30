@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json",
+  "title": "Workflow SubscriberListOperation Node",
+  "description": "Workflow SubscriberListOperation Node",
+  "$comment": "Workflow SubscriberListOperation Node",
+  "$definitions": {
+    "subscriberlistoperation_props": {
+      "type": "object",
+      "properties": {
+        "is_list_id_dynamic": {
+          "type": "boolean",
+          "default": false,
+          "description": "Is list_id a static literal or a handlebars expression"
+        },
+        "list_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "static literal OR a handlebars expression (if dynamic)"
+        },
+        "create_list_if_missing": {
+          "type": "boolean",
+          "default": false,
+          "description": "applicable when op=add_user. Should list be created if it doesn't exist?"
+        },
+        "list_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "applicable when op=add_user & create_list_if_missing=true. A handlebars expression to derive list-name"
+        },
+        "user_selection": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "actor",
+              "recipient"
+            ]
+          }
+        }
+      },
+      "required": [
+        "list_id",
+        "user_selection"
+      ],
+      "additionalProperties": false
+    },
+    "subscriberlistoperation_adduser_props": {
+      "$ref": "#/$definitions/subscriberlistoperation_props",
+      "op": {
+        "type": "string",
+        "const": "add_user"
+      },
+      "comment": "TODO: is it possible to set default value in json schema"
+    },
+    "subscriberlistoperation_removeuser_props": {
+      "$ref": "#/$definitions/subscriberlistoperation_props",
+      "op": {
+        "type": "string",
+        "const": "remove_user"
+      },
+      "create_list_if_missing": {
+        "type": "boolean",
+        "default": false
+      }
+    }
+  }
+}

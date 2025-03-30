@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_fragment_schema.json",
+  "title": "Workflow Fragments schema",
+  "description": "Workflow Fragments schema",
+  "$comment": "Workflow Fragments schema",
+  "$definitions": {
+    "static_duration_format": {
+      "type": "string",
+      "pattern": "^(\\d+[dhms])+$",
+      "description": "Duration format ([xx]d[xx]h[xx]m[xx]s) examples [30s, 1m, 1m30s, 1d3h45m]"
+    },
+    "condition_expr_v1_def": {
+      "type": "object",
+      "description": "Structure for laying a general condition statement",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "expression_v1"
+        },
+        "expression_v1": {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "AND"
+            },
+            "args": {
+              "type": "array",
+              "description": "one if-condition delimited by AND op",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "variable_ns": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "",
+                      "$brand",
+                      "$organization",
+                      "$actor",
+                      "$recipient",
+                      "$future_event"
+                    ],
+                    "description": "namespace for the variable on LHS of a plain expression"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "description": "variable on LHS of a plain expression",
+                    "minLength": 1
+                  },
+                  "op": {
+                    "type": "string",
+                    "enum": [
+                      "==",
+                      "!=",
+                      ">",
+                      ">=",
+                      "<",
+                      "<=",
+                      "EMPTY",
+                      "NON_EMPTY",
+                      "CONTAINS",
+                      "NOT_CONTAINS",
+                      "DATETIME_EQUALS",
+                      "DATETIME_LT",
+                      "DATETIME_GT"
+                    ],
+                    "description": "operator for the simple expression"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "RHS operand. for some of the operators RHS is not needed (e.g. EMPTY/NON_EMPTY etc.)",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "variable",
+                  "op"
+                ],
+                "additionalProperties": false,
+                "if": {
+                  "properties": {
+                    "op": {
+                      "not": {
+                        "enum": [
+                          "EMPTY",
+                          "NON_EMPTY"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "value"
+                  ]
+                }
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "op",
+            "args"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "expression_v1"
+      ],
+      "additionalProperties": false
+    },
+    "relative_to_component_props": {
+      "type": "object",
+      "properties": {
+        "pivot_expr": {
+          "type": "string",
+          "minLength": 2,
+          "description": "jq-expression to calculate the pivot timestamp which when used with offset will give final timestamp"
+        },
+        "offset_type": {
+          "type": "string",
+          "enum": [
+            "before",
+            "after"
+          ],
+          "description": "represents whether offset is to be added/subtracted from pivot timestamp"
+        },
+        "offset_value_type": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "dynamic"
+          ],
+          "description": "how to derive the offset value. Will it be fixed value OR derived at runtime using jq-expression"
+        },
+        "offset_value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "pivot_expr",
+        "offset_type",
+        "offset_value_type",
+        "offset_value"
+      ],
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "offset_value_type": {
+            "const": "fixed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "offset_value": {
+            "$ref": "#/$definitions/static_duration_format"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "offset_value": {
+            "type": "string",
+            "minLength": 2,
+            "description": "jq-expression to derive offset at runtime using payload"
+          }
+        }
+      }
+    },
+    "delay_component_props": {
+      "type": "object",
+      "properties": {
+        "delay_type": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "dynamic",
+            "relative_to"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "relative_to": {
+          "$ref": "#/$definitions/relative_to_component_props"
+        }
+      },
+      "required": [
+        "delay_type"
+      ],
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "delay_type": {
+            "enum": [
+              "fixed",
+              "dynamic"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "value"
+        ],
+        "if": {
+          "properties": {
+            "delay_type": {
+              "const": "fixed"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "value": {
+              "$ref": "#/$definitions/static_duration_format"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "value": {
+              "type": "string",
+              "minLength": 2,
+              "description": "jq-expression to derive delay at runtime using payload"
+            }
+          }
+        }
+      },
+      "else": {
+        "required": [
+          "relative_to"
+        ]
+      }
+    },
+    "future_events_condition_def": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "future_event"
+        },
+        "event_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "event_conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$definitions/condition_expr_v1_def"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "event_name"
+      ],
+      "additionalProperties": false
+    },
+    "delay_condition_def": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "delay"
+        },
+        "delay_properties": {
+          "$ref": "#/$definitions/delay_component_props"
+        }
+      },
+      "required": [
+        "type",
+        "delay_properties"
+      ],
+      "additionalProperties": false
+    },
+    "branches_with_mandatory_nodes": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+          }
+        }
+      },
+      "required": [
+        "nodes"
+      ],
+      "anyOf": [
+        {
+          "properties": {
+            "nodes": {
+              "contains": {
+                "properties": {
+                  "node_type": {
+                    "enum": [
+                      "httpapi_webhook",
+                      "httpapi_fetch",
+                      "send_multi_channel",
+                      "send_smart_channel_routing",
+                      "send_mobile_push",
+                      "send_email",
+                      "send_sms",
+                      "send_whatsapp",
+                      "send_inbox",
+                      "send_webpush",
+                      "send_slack",
+                      "send_ms_teams"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "nodes": {
+              "contains": {
+                "properties": {
+                  "node_type": {
+                    "enum": [
+                      "branch_waituntil",
+                      "branch"
+                    ]
+                  },
+                  "branches": {
+                    "contains": {
+                      "$ref": "#/$definitions/branches_with_mandatory_nodes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

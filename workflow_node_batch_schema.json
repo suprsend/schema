@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_batch_schema.json",
+  "title": "Workflow Batch Node",
+  "description": "Workflow Batch Node",
+  "$comment": "Workflow Batch Node",
+  "type": "object",
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": [
+        "accumulate_all",
+        "flush_leading_item"
+      ]
+    },
+    "window_type": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "dynamic",
+        "relative_to"
+      ]
+    },
+    "fixed_window": {
+      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+    },
+    "dynamic_window_expr": {
+      "type": "string",
+      "minLength": 2,
+      "description": "if window_type=dynamic, jq-expression for deriving delay/window"
+    },
+    "relative_to": {
+      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/relative_to_component_props"
+    },
+    "retain_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "description": "max number of items to retain after batch closes"
+    },
+    "retain_order": {
+      "type": "string",
+      "enum": [
+        "first",
+        "last"
+      ],
+      "description": "retain items in this order. first -> first n items. last -> last n items"
+    },
+    "batch_key": {
+      "type": "string",
+      "description": "jq-expression for deriving batch-key from payload"
+    }
+  },
+  "required": [
+    "mode",
+    "window_type"
+  ],
+  "additionalProperties": false,
+  "if": {
+    "properties": {
+      "window_type": {
+        "const": "fixed"
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "fixed_window"
+    ]
+  },
+  "else": {
+    "if": {
+      "properties": {
+        "window_type": {
+          "const": "dynamic"
+        }
+      }
+    },
+    "then": {
+      "required": [
+        "dynamic_window_expr"
+      ]
+    },
+    "else": {
+      "required": [
+        "relative_to"
+      ]
+    }
+  }
+}

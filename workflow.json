@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow.json",
+  "title": "Workflow Schema",
+  "description": "Workflow Schema",
+  "$comment": "Workflow Schema",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9-_]+$",
+      "description": "Preference category slug"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Description of latest workflow version"
+    },
+    "trigger_type": {
+      "type": "string",
+      "enum": [
+        "event",
+        "api"
+      ],
+      "description": "trigger type"
+    },
+    "trigger_events": {
+      "type": "array",
+      "description": "Array of event names that can trigger this workflow",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "optional tags for workflow",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ratelimit": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "ratelimit for a workflow/recipient. [count=2 in window=30d]",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sliding_window": {
+          "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+        }
+      },
+      "required": [
+        "count",
+        "sliding_window"
+      ],
+      "additionalProperties": false
+    },
+    "override_recipients_type": {
+      "type": "string",
+      "enum": [
+        null,
+        "user",
+        "single_object_fields"
+      ],
+      "description": "override recipients using trigger payload. (applicable only if trigger_type=event)"
+    },
+    "override_recipients_user_expr": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "a jq-expression to evaluate new recipients of type user (if override_recipients_type=user)"
+    },
+    "override_recipients_single_object_fields_expr": {
+      "type": "object",
+      "description": "overrides original recipient with an object. object-type and id are evaluated using jq-expr (if override_recipients_type=single_object_fields)",
+      "properties": {
+        "object_type": {
+          "type": "string",
+          "minLength": 2,
+          "description": "a jq-expression to evaluate object_type"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 2,
+          "description": "a jq-expression to evaluate object_id"
+        },
+        "$object_subscriptions_query.depth": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "description": "a jq-expression to evaluate subscriptions_query.depth"
+        }
+      },
+      "required": [
+        "object_type",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "override_actor_user_expr": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "a jq-expression to evaluate actor. (applicable only if trigger_type=event)"
+    },
+    "override_tenant_expr": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "a jq-expression to evaluate tenant. (applicable only if trigger_type=event)"
+    },
+    "conditions": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "trigger workflow only if these conditions satisfy",
+      "items": {
+        "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/condition_expr_v1_def"
+      }
+    },
+    "tree": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "description": "Array of steps in the workflow",
+          "items": {
+            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "nodes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "category",
+    "trigger_type",
+    "tree"
+  ],
+  "additionalProperties": false,
+  "if": {
+    "properties": {
+      "trigger_type": {
+        "const": "event"
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "trigger_events"
+    ]
+  },
+  "comment": "TODO: override fields only applicable if trigger_type=event"
+}

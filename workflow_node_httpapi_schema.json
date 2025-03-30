@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow_node_httpapi_schema.json",
+  "title": "Workflow Httpapi Node",
+  "description": "Workflow Httpapi Node",
+  "$comment": "Workflow Httpapi Node",
+  "$definitions": {
+    "httpapi_node_props": {
+      "type": "object",
+      "properties": {
+        "http_method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "PUT",
+            "POST",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "JSONNET script to evaluate url"
+        },
+        "headers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "description": "JSONNET script to evaluate Header key"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "description": "JSONNET script to evaluate Header value"
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        },
+        "body_content_type": {
+          "type": "string",
+          "enum": [
+            "application/json"
+          ]
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "description": "JSONNET script to evaluate request body"
+        },
+        "query_params": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "description": "JSONNET script to evaluate Query param key"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "description": "JSONNET script to evaluate Query param value"
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        },
+        "output_key": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "optional key to store the response body of api call"
+        }
+      },
+      "required": [
+        "http_method",
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "httpapi_webhook_props": {
+      "$ref": "#/$definitions/httpapi_node_props"
+    },
+    "httpapi_fetch_props": {
+      "$ref": "#/$definitions/httpapi_node_props",
+      "properties": {
+        "http_method": {
+          "type": "string",
+          "const": "GET"
+        },
+        "body": {
+          "type": "null"
+        }
+      }
+    }
+  }
+}
