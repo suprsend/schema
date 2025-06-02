@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/schema.json",
   "title": "Workflow Schema",
   "description": "Workflow Schema",
   "$comment": "Workflow Schema",
@@ -9,7 +9,7 @@
     "$schema": {
       "type": "string",
       "format": "uri",
-      "default": "https://schema.suprsend.com/workflow.json"
+      "default": "https://schema.suprsend.com/workflow/v1/schema.json"
     },
     "category": {
       "type": "string",
@@ -65,7 +65,7 @@
           "minimum": 1
         },
         "sliding_window": {
-          "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+          "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/static_duration_format"
         }
       },
       "required": [
@@ -140,7 +140,7 @@
       ],
       "description": "trigger workflow only if these conditions satisfy",
       "items": {
-        "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/condition_expr_v1_def"
+        "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/condition_expr_v1_def"
       }
     },
     "tree": {
@@ -150,7 +150,7 @@
           "type": "array",
           "description": "Array of steps in the workflow",
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/tree_schema.json#/$definitions/node_def"
           },
           "minItems": 1
         }

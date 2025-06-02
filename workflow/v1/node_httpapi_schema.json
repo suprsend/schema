@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_httpapi_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_httpapi_schema.json",
   "title": "Workflow Httpapi Node",
   "description": "Workflow Httpapi Node",
   "$comment": "Workflow Httpapi Node",

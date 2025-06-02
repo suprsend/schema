@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_fragment_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/fragment_schema.json",
   "title": "Workflow Fragments schema",
   "description": "Workflow Fragments schema",
   "$comment": "Workflow Fragments schema",
@@ -288,7 +288,7 @@
         "nodes": {
           "type": "array",
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/tree_schema.json#/$definitions/node_def"
           }
         }
       },

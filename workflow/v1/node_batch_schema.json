@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_batch_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_batch_schema.json",
   "title": "Workflow Batch Node",
   "description": "Workflow Batch Node",
   "$comment": "Workflow Batch Node",
@@ -22,7 +22,7 @@
       ]
     },
     "fixed_window": {
-      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+      "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/static_duration_format"
     },
     "dynamic_window_expr": {
       "type": "string",
@@ -30,7 +30,7 @@
       "description": "if window_type=dynamic, jq-expression for deriving delay/window"
     },
     "relative_to": {
-      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/relative_to_component_props"
+      "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/relative_to_component_props"
     },
     "retain_count": {
       "type": "integer",

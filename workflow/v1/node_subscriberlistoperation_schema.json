@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_subscriberlistoperation_schema.json",
   "title": "Workflow SubscriberListOperation Node",
   "description": "Workflow SubscriberListOperation Node",
   "$comment": "Workflow SubscriberListOperation Node",
