@@ -59,22 +59,23 @@
             "string",
             "null"
           ],
-          "minLength": 1,
+          "minLength": 2,
+          "maxLength": 64,
           "description": "The name of the Node"
         },
         "description": {
-          "type": "string",
-          "description": "The name of the Node"
+          "type": ["string", "null"],
+          "maxLength": 500,
+          "description": "Node Description"
         },
-        "output_ref": {
+        "ref": {
           "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z0-9_]+$",
           "description": "Reference/slug of the Node"
         },
         "properties": {
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": ["object", "null"]
         },
         "branches": {
           "type": "array",
@@ -84,9 +85,10 @@
         }
       },
       "required": [
-        "node_type"
+        "node_type",
+        "properties"
       ],
-      "additionalProperties": false,
+      "additionalProperties": true,
       "allOf": [
         {
           "if": {

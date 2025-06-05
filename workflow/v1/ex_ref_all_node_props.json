@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/workflow/v1/ex_ref_all_node_props.json",
+  "title": "Ref Impl all node props",
+  "description": "Ref Impl all node props",
+  "$comment": "Ref Impl all node props",
+  "type": "object",
+  "properties": {
+    "node_delay_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_component_props"
+    },
+    "node_timewindow_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_timewindow_schema.json"
+    },
+    "node_batch_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_batch_schema.json"
+    },
+    "node_digest_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_digest_schema.json"
+    },
+    "node_httpapi_fetch_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_httpapi_schema.json#/$definitions/httpapi_fetch_props"
+    },
+    "node_httpapi_webhook_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_httpapi_schema.json#/$definitions/httpapi_webhook_props"
+    },
+    "node_send_multi_channel_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_multi_channel_props"
+    },
+    "node_send_smart_channel_routing_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_smart_channel_routing_props"
+    },
+    "node_send_mobile_push_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_mobile_push_props"
+    },
+    "node_send_email_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_email_props"
+    },
+    "node_send_sms_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_sms_props"
+    },
+    "node_send_whatsapp_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_whatsapp_props"
+    },
+    "node_send_inbox_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_inbox_props"
+    },
+    "node_send_webpush_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_webpush_props"
+    },
+    "node_send_slack_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_slack_props"
+    },
+    "node_send_ms_teams_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_ms_teams_props"
+    },
+    "node_transform_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/transform_props"
+    },
+    "node_invokeworkflow_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
+    },
+    "node_userupdate_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/userupdate_props"
+    },
+    "node_subscriberlistoperation_adduser_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_adduser_props"
+    },
+    "node_subscriberlistoperation_removeuser_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_removeuser_props"
+    },
+    "node_objectoperation_addsubscription_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_objectoperation_schema.json#/$definitions/objectoperation_addsubscription_props"
+    },
+    "node_objectoperation_removesubscription_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_objectoperation_schema.json#/$definitions/objectoperation_removesubscription_props"
+    },
+    "node_branch_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_branch_schema.json#/$definitions/temp_branch"
+    },
+    "node_branch_waituntil_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_branch_schema.json#/$definitions/temp_branch"
+    }
+  },
+  "comment": "TODO: this is only for helping language libraries generate classes in respective languages"
+}

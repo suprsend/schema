@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.suprsend.com/workflow/v1/fragment_schema.json",
-  "title": "Workflow Fragments schema",
-  "description": "Workflow Fragments schema",
-  "$comment": "Workflow Fragments schema",
+  "title": "Schema for various Workflow Fragments",
+  "description": "Schema for various Workflow Fragments",
+  "$comment": "Schema for various Workflow Fragments",
   "$definitions": {
     "static_duration_format": {
       "type": "string",
@@ -38,10 +38,10 @@
                     ],
                     "enum": [
                       "",
-                      "$brand",
-                      "$organization",
                       "$actor",
                       "$recipient",
+                      "$brand",
+                      "$organization",
                       "$future_event"
                     ],
                     "description": "namespace for the variable on LHS of a plain expression"
@@ -64,6 +64,8 @@
                       "NON_EMPTY",
                       "CONTAINS",
                       "NOT_CONTAINS",
+                      "ARRAY_INTERSECTS",
+                      "NOT_ARRAY_INTERSECTS",
                       "DATETIME_EQUALS",
                       "DATETIME_LT",
                       "DATETIME_GT"
