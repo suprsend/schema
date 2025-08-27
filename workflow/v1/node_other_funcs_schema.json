@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json",
   "title": "Workflow Nodes others",
   "description": "Workflow Nodes others",
   "$comment": "Workflow Nodes others",
   "$definitions": {
     "node_delay_props": {
-      "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_component_props"
+      "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_component_props"
     },
     "transform_props": {
       "type": "object",

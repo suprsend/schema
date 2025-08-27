@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_tree_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/tree_schema.json",
   "title": "Workflow Node Tree",
   "description": "Workflow Node Tree",
   "$comment": "Workflow Node Tree",
@@ -8,7 +8,7 @@
   "properties": {
     "nodes": {
       "type": "array",
-      "description": "Array of nodes, at least one must be of types ['send_*', 'httpapi_*'] somewhere in the tree",
+      "description": "Array of nodes, at least one of these types ['send_*', 'httpapi_*'] must be present somewhere in the tree",
       "items": {
         "$ref": "#/$definitions/node_def"
       },
@@ -59,22 +59,23 @@
             "string",
             "null"
           ],
-          "minLength": 1,
+          "minLength": 2,
+          "maxLength": 64,
           "description": "The name of the Node"
         },
         "description": {
-          "type": "string",
-          "description": "The name of the Node"
+          "type": ["string", "null"],
+          "maxLength": 500,
+          "description": "Node Description"
         },
-        "output_ref": {
+        "ref": {
           "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z0-9_]+$",
           "description": "Reference/slug of the Node"
         },
         "properties": {
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": ["object", "null"]
         },
         "branches": {
           "type": "array",
@@ -84,9 +85,10 @@
         }
       },
       "required": [
-        "node_type"
+        "node_type",
+        "properties"
       ],
-      "additionalProperties": false,
+      "additionalProperties": true,
       "allOf": [
         {
           "if": {
@@ -102,7 +104,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_component_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_component_props"
               }
             }
           }
@@ -121,7 +123,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_timewindow_schema.json"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_timewindow_schema.json"
               }
             }
           }
@@ -140,7 +142,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_batch_schema.json"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_batch_schema.json"
               }
             }
           }
@@ -159,7 +161,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_digest_schema.json"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_digest_schema.json"
               }
             }
           }
@@ -178,7 +180,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_httpapi_schema.json#/$definitions/httpapi_fetch_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_httpapi_schema.json#/$definitions/httpapi_fetch_props"
               }
             }
           }
@@ -197,7 +199,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_httpapi_schema.json#/$definitions/httpapi_webhook_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_httpapi_schema.json#/$definitions/httpapi_webhook_props"
               }
             }
           }
@@ -216,7 +218,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_multi_channel_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_multi_channel_props"
               }
             }
           }
@@ -235,7 +237,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_smart_channel_routing_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_smart_channel_routing_props"
               }
             }
           }
@@ -254,7 +256,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_mobile_push_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_mobile_push_props"
               }
             }
           }
@@ -273,7 +275,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_email_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_email_props"
               }
             }
           }
@@ -292,7 +294,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_sms_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_sms_props"
               }
             }
           }
@@ -311,7 +313,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_whatsapp_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_whatsapp_props"
               }
             }
           }
@@ -330,7 +332,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_inbox_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_inbox_props"
               }
             }
           }
@@ -349,7 +351,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_webpush_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_webpush_props"
               }
             }
           }
@@ -368,7 +370,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_slack_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_slack_props"
               }
             }
           }
@@ -387,7 +389,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_send_schema.json#/$definitions/send_ms_teams_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_send_schema.json#/$definitions/send_ms_teams_props"
               }
             }
           }
@@ -406,7 +408,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/transform_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/transform_props"
               }
             }
           }
@@ -425,7 +427,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
               }
             }
           }
@@ -444,7 +446,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_other_funcs_schema.json#/$definitions/userupdate_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/userupdate_props"
               }
             }
           }
@@ -463,7 +465,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_adduser_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_adduser_props"
               }
             }
           }
@@ -482,7 +484,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_removeuser_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_subscriberlistoperation_schema.json#/$definitions/subscriberlistoperation_removeuser_props"
               }
             }
           }
@@ -501,7 +503,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_objectoperation_schema.json#/$definitions/objectoperation_addsubscription_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_objectoperation_schema.json#/$definitions/objectoperation_addsubscription_props"
               }
             }
           }
@@ -520,7 +522,7 @@
             ],
             "properties": {
               "properties": {
-                "$ref": "https://schema.suprsend.com/workflow_node_objectoperation_schema.json#/$definitions/objectoperation_removesubscription_props"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_objectoperation_schema.json#/$definitions/objectoperation_removesubscription_props"
               }
             }
           }
@@ -539,7 +541,7 @@
             ],
             "properties": {
               "branches": {
-                "$ref": "https://schema.suprsend.com/workflow_node_branch_schema.json#/$definitions/temp_branch"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_branch_schema.json#/$definitions/temp_branch"
               }
             }
           }
@@ -558,7 +560,7 @@
             ],
             "properties": {
               "branches": {
-                "$ref": "https://schema.suprsend.com/workflow_node_branch_schema.json#/$definitions/temp_branch"
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_branch_schema.json#/$definitions/temp_branch"
               }
             }
           }
@@ -610,7 +612,7 @@
                 },
                 "branches": {
                   "contains": {
-                    "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/branches_with_mandatory_nodes"
+                    "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/branches_with_mandatory_nodes"
                   }
                 }
               }

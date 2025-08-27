@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_branch_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_branch_schema.json",
   "title": "Workflow Node generic branch",
   "description": "Workflow Node generic branch",
   "$comment": "Workflow Node generic branch",
@@ -35,14 +35,14 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/condition_expr_v1_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/condition_expr_v1_def"
           }
         },
         "nodes": {
           "type": "array",
           "description": "nodes inside the branch",
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/tree_schema.json#/$definitions/node_def"
           }
         }
       },
@@ -69,14 +69,14 @@
           "minItems": 1,
           "maxItems": 1,
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/condition_expr_v1_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/condition_expr_v1_def"
           }
         },
         "nodes": {
           "type": "array",
           "description": "nodes inside the branch",
           "items": {
-            "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+            "$ref": "https://schema.suprsend.com/workflow/v1/tree_schema.json#/$definitions/node_def"
           }
         }
       },
@@ -88,17 +88,34 @@
     "temp_branch": {
       "type": "array",
       "minItems": 2,
+      "maxItems": 10,
       "items": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "description": "The name of the Branch"
           },
           "description": {
-            "type": "string"
+            "type": ["string", "null"],
+            "maxLength": 500,
+            "description": "Branch Description"
+          },
+          "ref": {
+            "type": ["string", "null"],
+            "maxLength": 64,
+            "pattern": "^[a-z0-9_]+$",
+            "description": "Reference/slug of the branch"
           },
           "is_default": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether this is the default branch. There can be only one default branch, and it must be the last branch in the list"
+          },
+          "is_terminal": {
+            "type": "boolean",
+            "description": "Whether workflow terminates at the end of this branch"
           },
           "conditions": {
             "type": "array",
@@ -114,7 +131,7 @@
                 }
               },
               "then": {
-                "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/future_events_condition_def"
+                "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/future_events_condition_def"
               },
               "else": {
                 "if": {
@@ -125,7 +142,7 @@
                   }
                 },
                 "then": {
-                  "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/delay_condition_def"
+                  "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_condition_def"
                 },
                 "else": {
                   "if": {
@@ -136,7 +153,7 @@
                     }
                   },
                   "then": {
-                    "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/condition_expr_v1_def"
+                    "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/condition_expr_v1_def"
                   }
                 }
               }
@@ -146,14 +163,17 @@
             "type": "array",
             "description": "nodes inside the branch",
             "items": {
-              "$ref": "https://schema.suprsend.com/workflow_tree_schema.json#/$definitions/node_def"
+              "$ref": "https://schema.suprsend.com/workflow/v1/tree_schema.json#/$definitions/node_def"
             }
           }
         },
         "required": [
-          "conditions"
+          "name",
+          "is_default",
+          "conditions",
+          "nodes"
         ],
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   }

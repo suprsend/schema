@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_timewindow_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_timewindow_schema.json",
   "title": "Workflow Timewindow Node",
   "description": "Workflow Timewindow Node",
   "$comment": "Workflow Timewindow Node",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.suprsend.com/workflow_node_send_schema.json",
+  "$id": "https://schema.suprsend.com/workflow/v1/node_send_schema.json",
   "title": "Workflow Send Node",
   "description": "Workflow Send Node",
   "$comment": "Workflow Send Node",
@@ -63,7 +63,7 @@
           "description": "applicable for smart-channel-routing, notification on mandatory channels will be sent immediately"
         },
         "ttl_value": {
-          "$ref": "https://schema.suprsend.com/workflow_fragment_schema.json#/$definitions/static_duration_format"
+          "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/static_duration_format"
         }
       },
       "required": [
