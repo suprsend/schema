@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/schemas/workspace-schema-definition.json",
+  "$id": "https://schema.suprsend.com/schemas/v1/schema.json",
   "title": "Workspace Schema Definition",
   "description": "Defines the structure for a schema version, including its metadata and the actual JSON schema it contains.",
   "type": "object",
@@ -14,30 +14,29 @@
     "name": {
       "description": "A human-readable name for the schema.",
       "type": "string",
-      "minLength": 1,
-      "maxLength": 255
+      "minLength": 0,
+      "maxLength": 128
     },
     "description": {
       "description": "A brief explanation of the schema's purpose.",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "status": {
       "description": "The current lifecycle status of the schema version.",
       "type": "string",
       "enum": [
         "draft",
-        "active",
-        "inactive"
+        "committed",
+        "live"
       ]
     },
     "hash": {
       "description": "The SHA-256 hash of the json_schema content, used for integrity checking.",
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
-    },
-    "is_enabled": {
-      "description": "A flag to indicate if this schema definition is currently enabled and usable.",
-      "type": "boolean"
     },
     "json_schema": {
       "description": "The actual JSON schema definition object that this record represents.",
