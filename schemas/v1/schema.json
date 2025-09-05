@@ -6,9 +6,9 @@
   "type": "object",
   "properties": {
     "slug": {
-      "description": "slug for the schema. Typically lowercase with underscores.",
+      "description": "slug for the schema. typically lowercase with underscores.",
       "type": "string",
-      "pattern": "^[a-z0-9_]+$",
+      "pattern": "^[a-z0-9_-]+$",
       "minLength": 1
     },
     "name": {
@@ -18,7 +18,7 @@
       "maxLength": 128
     },
     "description": {
-      "description": "A brief explanation of the schema's purpose.",
+      "description": "description for schema",
       "type": [
         "string",
         "null"
@@ -26,25 +26,34 @@
     },
     "status": {
       "description": "status for schema, read only",
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "enum": [
         "draft",
         "committed",
         "live"
-      ]
+      ],
+      "readOnly": true
     },
     "hash": {
       "description": "hash for schema, read only",
       "type": "string",
-      "maxLength": 256
+      "maxLength": 256,
+      "readOnly": true
     },
     "json_schema": {
-      "description": "Draft 2020-12 json schema without external links",
-      "type": "object",
+      "description": "Draft2020-12 json schema without external links",
+      "type": [
+        "object",
+        "null"
+      ],
       "minProperties": 1
     }
   },
   "required": [
     "slug"
-  ]
+  ],
+  "additionalProperties": true
 }

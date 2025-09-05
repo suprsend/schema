@@ -29,7 +29,7 @@
         "object",
         "null"
       ],
-      "description": "Reference to the JSON schema that validates this event's payload properties.",
+      "description": "Reference to the JSON schema that validates this event's properties.",
       "properties": {
         "schema": {
           "type": "string",
@@ -62,5 +62,6 @@
   },
   "required": [
     "name"
-  ]
+  ],
+  "additionalProperties": true
 }
