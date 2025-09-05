@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.suprsend.com/event/v1/schema.json",
+  "title": "EventSchemaV1",
+  "description": "Workspace Event Schema v1",
+  "$comment": "Workspace Event Schema v1",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "default": "https://schema.suprsend.com/event/v1/schema.json"
+    },
+    "name": {
+      "type": "string",
+      "description": "The unique name of the event.",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A user-friendly description of what this event represents."
+    },
+    "payload_schema": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Reference to the JSON schema that validates this event's properties.",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "description": "schema slug",
+          "minLength": 1
+        },
+        "version_no": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "schema version number",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "schema"
+      ],
+      "additionalProperties": false
+    },
+    "workflows": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "list of linked workflow",
+      "items": {
+        "type": "string",
+        "description": "workflow slug"
+      },
+      "readOnly": true
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": true
+}
