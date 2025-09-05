@@ -1,0 +1,165 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/preference_category/v1/schema.json",
+    "title": "PreferenceCategorySchemaV1",
+    "description": "Preference Category Schema v1",
+    "$comment": "Preference Category Schema v1",
+    "type": "object",
+    "properties": {
+      "$schema": {
+        "type": "string",
+        "format": "uri",
+        "default": "https://schema.suprsend.com/preference_category/v1/schema.json"
+      },
+      "categories": {
+        "type": "array",
+        "uniqueItems": true,
+        "description": "entries with respect to each root category and their sections & subcategories",
+        "items": {
+          "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/root_category_def"
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "status": {
+        "type": ["string", "null"],
+        "enum": ["draft", "active", "inactive"],
+        "description": "Status of the preference category, read only"
+      },
+      "hash": {
+        "type": ["string", "null"],
+        "maxLength": 256,
+        "description": "hash of the preference category, read only"
+      },
+      "version_no": {
+        "type": ["integer", "null"],
+        "description": "Version number of the preference category, read only"
+      },
+      "commit_message": {
+        "type": ["string", "null"],
+        "description": "Commit message. read only"
+      },
+      "committed_at": {
+        "type": ["string", "null"],
+        "description": "Commit timestamp. read only"
+      }
+    },
+    "required": ["categories"],
+    "additionalProperties": true,
+    "$definitions": {
+      "root_category_def": {
+        "type": "object",
+        "properties": {
+          "root_category": {
+            "type": "string",
+            "enum": ["system", "transactional", "promotional"],
+            "description": "Root category"
+          },
+          "sections": {
+            "type": ["array", "null"],
+            "description": "Array of sections in the root category",
+            "items": {
+              "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/section_def"
+            },
+            "maxItems": 25
+          }
+        },
+        "required": ["root_category"],
+        "additionalProperties": true
+      },
+      "section_def": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": ["string", "null"],
+            "description": "Section name"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Section description"
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "uniqueItems": true,
+            "description": "Section tags",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z0-9_\\-.:]+$"
+            },
+            "maxItems": 25
+          },
+          "subcategories": {
+            "type": ["array", "null"],
+            "description": "Array of subcategories in the section",
+            "items": {
+              "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/subcategory_def"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [],
+        "additionalProperties": true
+      },
+      "subcategory_def": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "subcategory name",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "subcategory description"
+          },
+          "category": {
+            "type": ["string", "null"],
+            "description": "this is the slug derived from the name. this is used to identify the subcategory, read only",
+            "maxLength": 128
+          },
+          "default_preference": {
+            "type": "string",
+            "enum": ["cant_unsubscribe", "opt_in", "opt_out"],
+            "description": "Subcategory default preference"
+          },
+          "default_mandatory_channels": {
+            "type": ["array", "null"],
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "email",
+                "androidpush",
+                "iospush",
+                "webpush",
+                "inbox",
+                "whatsapp",
+                "slack",
+                "ms_teams"
+              ]
+            },
+            "description": "If default preference is cant_unsubscribe, this is the mandatory channels that cant be unsubscribed. If null, it means all channels are unsubscribable."
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "uniqueItems": true,
+            "description": "subcategory tags",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z0-9_\\-.:]+$"
+            },
+            "maxItems": 25
+          }
+        },
+        "required": ["name", "default_preference"],
+        "additionalProperties": true
+      }
+    }
+}
+  
