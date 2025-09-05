@@ -51,7 +51,10 @@
       "additionalProperties": false
     },
     "workflows": {
-      "type": "array",
+      "type": [
+        "array",
+        "null"
+      ],
       "description": "list of linked workflow",
       "items": {
         "type": "string",

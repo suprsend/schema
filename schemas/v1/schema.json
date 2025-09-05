@@ -19,10 +19,7 @@
     },
     "description": {
       "description": "description for schema",
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": "string"
     },
     "status": {
       "description": "status for schema, read only",
@@ -41,6 +38,15 @@
       "description": "hash for schema, read only",
       "type": "string",
       "maxLength": 256,
+      "readOnly": true
+    },
+    "version_no": {
+      "description": "schema version number, read only",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
       "readOnly": true
     },
     "json_schema": {
