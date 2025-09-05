@@ -1,15 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.suprsend.com/event/v1/schema.json",
-  "title": "Event Schema v1",
-  "description": "Defines the structure of an event object, which represents a specific action or occurrence in your system.",
-  "$comment": "Version 1 of the event schema",
+  "title": "EventSchemaV1",
+  "description": "Workspace Event Schema v1",
+  "$comment": "Workspace Event Schema v1",
   "type": "object",
   "properties": {
     "$schema": {
       "type": "string",
       "format": "uri",
-      "description": "The schema URI this object conforms to.",
       "default": "https://schema.suprsend.com/event/v1/schema.json"
     },
     "name": {
@@ -34,7 +33,7 @@
       "properties": {
         "schema": {
           "type": "string",
-          "description": "The name or identifier of the payload schema.",
+          "description": "schema slug",
           "minLength": 1
         },
         "version_no": {
@@ -42,7 +41,7 @@
             "integer",
             "null"
           ],
-          "description": "The specific version number of the payload schema. If null, refers to the latest version.",
+          "description": "schema version number",
           "minimum": 1
         }
       },
@@ -53,30 +52,15 @@
     },
     "workflows": {
       "type": "array",
-      "description": "A read-only list of workflow slugs that are triggered by this event.",
+      "description": "list of linked workflow",
       "items": {
         "type": "string",
-        "description": "The slug of a workflow.",
+        "description": "workflow slug"
       },
-      "readOnly": true
-    },
-    "last_triggered_at": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "date-time",
-      "description": "The timestamp of when this event was last triggered (ISO 8601 format).",
-      "readOnly": true
-    },
-    "created_at": {
-      "type": "string",
-      "format": "date-time",
-      "description": "The timestamp of when this event definition was created (ISO 8601 format).",
       "readOnly": true
     }
   },
   "required": [
     "name"
-  ],
+  ]
 }

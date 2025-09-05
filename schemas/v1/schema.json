@@ -1,18 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.suprsend.com/schemas/v1/schema.json",
-  "title": "Workspace Schema Definition",
-  "description": "Defines the structure for a schema version, including its metadata and the actual JSON schema it contains.",
+  "title": "SchemaDefinitionV1",
+  "description": "Schema Definition to validate payload",
   "type": "object",
   "properties": {
     "slug": {
-      "description": "A unique, machine-readable identifier for the schema. Typically lowercase with underscores.",
+      "description": "slug for the schema. Typically lowercase with underscores.",
       "type": "string",
       "pattern": "^[a-z0-9_]+$",
       "minLength": 1
     },
     "name": {
-      "description": "A human-readable name for the schema.",
+      "description": "Schema name",
       "type": "string",
       "minLength": 0,
       "maxLength": 128
@@ -25,7 +25,7 @@
       ]
     },
     "status": {
-      "description": "The current lifecycle status of the schema version.",
+      "description": "status for schema, read only",
       "type": "string",
       "enum": [
         "draft",
@@ -34,34 +34,14 @@
       ]
     },
     "hash": {
-      "description": "The SHA-256 hash of the json_schema content, used for integrity checking.",
+      "description": "hash for schema, read only",
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
+      "maxLength": 256
     },
     "json_schema": {
-      "description": "The actual JSON schema definition object that this record represents.",
+      "description": "Draft 2020-12 json schema without external links",
       "type": "object",
       "minProperties": 1
-    },
-    "updated_at": {
-      "description": "The timestamp of when this record was last updated, in ISO 8601 format.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "commited_at": {
-      "description": "The timestamp of when this version was committed or made active. Can be null if it's a draft.",
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "date-time"
-    },
-    "commit_message": {
-      "description": "A message describing the changes in this version. Can be null.",
-      "type": [
-        "string",
-        "null"
-      ]
     }
   },
   "required": [
