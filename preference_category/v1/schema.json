@@ -11,10 +11,10 @@
         "format": "uri",
         "default": "https://schema.suprsend.com/preference_category/v1/schema.json"
       },
-      "categories": {
+      "root_categories": {
         "type": "array",
         "uniqueItems": true,
-        "description": "entries with respect to each root category and their sections & subcategories",
+        "description": "entries with respect to each root category and their sections & categories",
         "items": {
           "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/root_category_def"
         },
@@ -90,11 +90,11 @@
             },
             "maxItems": 25
           },
-          "subcategories": {
+          "categories": {
             "type": ["array", "null"],
-            "description": "Array of subcategories in the section",
+            "description": "Array of categories in the section",
             "items": {
-              "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/subcategory_def"
+              "$ref": "https://schema.suprsend.com/preference_category/v1/schema.json#/$definitions/category_def"
             },
             "maxItems": 100
           }
@@ -102,28 +102,28 @@
         "required": [],
         "additionalProperties": true
       },
-      "subcategory_def": {
+      "category_def": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "subcategory name",
+            "description": "category name",
             "minLength": 1,
             "maxLength": 128
           },
           "description": {
             "type": ["string", "null"],
-            "description": "subcategory description"
+            "description": "category description"
           },
           "category": {
             "type": ["string", "null"],
-            "description": "this is the slug derived from the name. this is used to identify the subcategory, read only",
+            "description": "this is the slug derived from the name. this is used to identify the category, read only",
             "maxLength": 128
           },
           "default_preference": {
             "type": "string",
             "enum": ["cant_unsubscribe", "opt_in", "opt_out"],
-            "description": "Subcategory default preference"
+            "description": "Category default preference"
           },
           "default_mandatory_channels": {
             "type": ["array", "null"],
@@ -147,7 +147,7 @@
           "tags": {
             "type": ["array", "null"],
             "uniqueItems": true,
-            "description": "subcategory tags",
+            "description": "Category tags",
             "items": {
               "type": "string",
               "minLength": 1,
