@@ -144,6 +144,25 @@
             },
             "description": "If default preference is cant_unsubscribe, this is the mandatory channels that cant be unsubscribed. If null, it means all channels are unsubscribable."
           },
+          "default_optin_channels": {
+            "type": ["array", "null"],
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "email",
+                "androidpush",
+                "iospush",
+                "webpush",
+                "inbox",
+                "whatsapp",
+                "slack",
+                "ms_teams"
+              ]
+            },
+            "description": "If default preference is cant_unsubscribe/opt_in, this is the default channels that will be initially opted-in (on top of mandatory-channels in case of cant_unsubscribe). If null, it means all channels are opted-in."
+          },
           "tags": {
             "type": ["array", "null"],
             "uniqueItems": true,
