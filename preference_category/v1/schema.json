@@ -144,7 +144,7 @@
             },
             "description": "If default preference is cant_unsubscribe, this is the mandatory channels that cant be unsubscribed. If null, it means all channels are unsubscribable."
           },
-          "default_optin_channels": {
+          "default_opt_in_channels": {
             "type": ["array", "null"],
             "uniqueItems": true,
             "items": {
