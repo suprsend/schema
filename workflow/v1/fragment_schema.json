@@ -42,9 +42,15 @@
                       "$recipient",
                       "$brand",
                       "$organization",
-                      "$future_event"
+                      "$future_event",
+                      "$ref"
                     ],
-                    "description": "namespace for the variable on LHS of a plain expression"
+                    "description": "namespace for the variable on LHS of a plain expression. Use '$ref' to reference a previous node's output (e.g. send node message status)"
+                  },
+                  "ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "ref/slug of the node being referenced. Required when variable_ns='$ref'"
                   },
                   "variable": {
                     "type": "string",
@@ -68,9 +74,11 @@
                       "NOT_ARRAY_INTERSECTS",
                       "DATETIME_EQUALS",
                       "DATETIME_LT",
-                      "DATETIME_GT"
+                      "DATETIME_GT",
+                      "IS",
+                      "IS_NOT"
                     ],
-                    "description": "operator for the simple expression"
+                    "description": "operator for the simple expression. 'IS'/'IS_NOT' are only valid when variable_ns='$ref'"
                   },
                   "value": {
                     "type": "string",
@@ -85,20 +93,56 @@
                 "additionalProperties": false,
                 "if": {
                   "properties": {
-                    "op": {
-                      "not": {
-                        "enum": [
-                          "EMPTY",
-                          "NON_EMPTY"
-                        ]
-                      }
+                    "variable_ns": {
+                      "const": "$ref"
                     }
                   }
                 },
                 "then": {
                   "required": [
+                    "ref",
                     "value"
-                  ]
+                  ],
+                  "properties": {
+                    "op": {
+                      "enum": [
+                        "IS",
+                        "IS_NOT"
+                      ]
+                    },
+                    "variable": {
+                      "enum": [
+                        "message_status"
+                      ]
+                    },
+                    "value": {
+                      "enum": [
+                        "$message.delivered",
+                        "$message.seen",
+                        "$message.clicked",
+                        "$message.delivery_failed"
+                      ]
+                    }
+                  }
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "op": {
+                        "not": {
+                          "enum": [
+                            "EMPTY",
+                            "NON_EMPTY"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "value"
+                    ]
+                  }
                 }
               },
               "minItems": 1
