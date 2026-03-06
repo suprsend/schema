@@ -92,6 +92,9 @@
                 ],
                 "additionalProperties": false,
                 "if": {
+                  "required": [
+                    "variable_ns"
+                  ],
                   "properties": {
                     "variable_ns": {
                       "const": "$ref"
@@ -126,6 +129,16 @@
                   }
                 },
                 "else": {
+                  "properties": {
+                    "op": {
+                      "not": {
+                        "enum": [
+                          "IS",
+                          "IS_NOT"
+                        ]
+                      }
+                    }
+                  },
                   "if": {
                     "properties": {
                       "op": {
