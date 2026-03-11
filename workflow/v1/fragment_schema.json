@@ -42,14 +42,123 @@
                       "$recipient",
                       "$brand",
                       "$organization",
+                      "$future_event"
+                    ],
+                    "description": "namespace for the variable on LHS of a plain expression"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "description": "variable on LHS of a plain expression",
+                    "minLength": 1
+                  },
+                  "op": {
+                    "type": "string",
+                    "enum": [
+                      "==",
+                      "!=",
+                      ">",
+                      ">=",
+                      "<",
+                      "<=",
+                      "EMPTY",
+                      "NON_EMPTY",
+                      "CONTAINS",
+                      "NOT_CONTAINS",
+                      "ARRAY_INTERSECTS",
+                      "NOT_ARRAY_INTERSECTS",
+                      "DATETIME_EQUALS",
+                      "DATETIME_LT",
+                      "DATETIME_GT"
+                    ],
+                    "description": "operator for the simple expression"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "RHS operand. for some of the operators RHS is not needed (e.g. EMPTY/NON_EMPTY etc.)",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "variable",
+                  "op"
+                ],
+                "additionalProperties": false,
+                "if": {
+                  "properties": {
+                    "op": {
+                      "not": {
+                        "enum": [
+                          "EMPTY",
+                          "NON_EMPTY"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "value"
+                  ]
+                }
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "op",
+            "args"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "expression_v1"
+      ],
+      "additionalProperties": false
+    },
+    "condition_expr_v1_branch_def": {
+      "type": "object",
+      "description": "Structure for laying a condition statement in branch nodes. Supports node-ref conditions ($ref) in addition to common expression types.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "expression_v1"
+        },
+        "expression_v1": {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "AND"
+            },
+            "args": {
+              "type": "array",
+              "description": "one if-condition delimited by AND op",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "variable_ns": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "",
+                      "$actor",
+                      "$recipient",
+                      "$brand",
+                      "$organization",
                       "$future_event",
                       "$ref"
                     ],
-                    "description": "namespace for the variable on LHS of a plain expression. Use '$ref' to reference a previous node's output (e.g. send node message status)"
+                    "description": "namespace for the variable on LHS. Use '$ref' to reference a previous node's output (e.g. send node message status)"
                   },
                   "ref": {
                     "type": "string",
                     "minLength": 1,
+                    "maxLength": 64,
+                    "pattern": "^[a-z0-9_]+$",
                     "description": "ref/slug of the node being referenced. Required when variable_ns='$ref'"
                   },
                   "variable": {
