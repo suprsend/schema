@@ -69,10 +69,10 @@
           "description": "Node Description"
         },
         "ref": {
-          "type": "string",
+          "type": ["string", "null"],
           "maxLength": 64,
-          "pattern": "^[a-z0-9_]+$",
-          "description": "Reference/slug of the Node"
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+          "description": "ref of the Node. Must be unique within a workflow across all nodes and branches"
         },
         "properties": {
           "type": ["object", "null"]

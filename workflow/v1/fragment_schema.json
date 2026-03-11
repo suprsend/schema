@@ -158,8 +158,8 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 64,
-                    "pattern": "^[a-z0-9_]+$",
-                    "description": "ref/slug of the node being referenced. Required when variable_ns='$ref'"
+                    "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+                    "description": "ref of the node being referenced. Currently only send node is allowed in ref. Required when variable_ns='$ref'"
                   },
                   "variable": {
                     "type": "string",
