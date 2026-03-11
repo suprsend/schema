@@ -120,31 +120,42 @@
           "conditions": {
             "type": "array",
             "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["future_event", "delay", "expression_v1"]
+                }
+              },
               "required": [
                 "type"
               ],
-              "if": {
-                "properties": {
-                  "type": {
-                    "const": "future_event"
-                  }
-                }
-              },
-              "then": {
-                "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/future_events_condition_def"
-              },
-              "else": {
-                "if": {
-                  "properties": {
-                    "type": {
-                      "const": "delay"
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "future_event"
+                      }
                     }
+                  },
+                  "then": {
+                    "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/future_events_condition_def"
                   }
                 },
-                "then": {
-                  "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_condition_def"
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "delay"
+                      }
+                    }
+                  },
+                  "then": {
+                    "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/delay_condition_def"
+                  }
                 },
-                "else": {
+                {
                   "if": {
                     "properties": {
                       "type": {
@@ -156,7 +167,7 @@
                     "$ref": "https://schema.suprsend.com/workflow/v1/fragment_schema.json#/$definitions/condition_expr_v1_branch_def"
                   }
                 }
-              }
+              ]
             }
           },
           "nodes": {
