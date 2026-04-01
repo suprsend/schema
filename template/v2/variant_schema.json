@@ -12,7 +12,7 @@
             "format": "uri",
             "default": "https://schema.suprsend.com/template/v2/variant_schema.json"
         },
-        "channel":{
+        "channel": {
             "type": "string",
             "enum": [
                 "email",
@@ -53,6 +53,9 @@
                 "$ref": "#/$defs/variant_condition_expr_v1_def"
             }
         },
+        "content": {
+            "type": "object"
+        },
         "needs_vendor_approval": {
             "type": "boolean",
             "description": "does content require vendor approval before sending. This is used for SMS content"
@@ -80,6 +83,152 @@
     "then": {
         "required": ["needs_vendor_approval"]
     },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "email"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/email_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "sms"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/sms_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "whatsapp"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/whatsapp_basic_interactive_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "inbox"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/inbox_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "slack"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/slack_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "ms_teams"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/ms_teams_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "androidpush"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/androidpush_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "iospush"
+                }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/iospush_schema.json"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "channel": {
+                        "const": "webpush"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "content": {
+                        "$ref": "https://schema.suprsend.com/template/v2/channel/webpush_schema.json"
+                    }
+                }
+            }
+        }
+    ],
     "$defs": {
         "variant_vendor_approval_def": {
             "type": "object",

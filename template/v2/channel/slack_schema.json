@@ -10,7 +10,7 @@
             "title": "$Schema",
             "type": "string",
             "format": "uri",
-            "default": "https://schema.suprsend.com/template/v2/channel/slack_schema.json"
+            "const": "https://schema.suprsend.com/template/v2/channel/slack_schema.json"
         },
         "templating_language": {
             "title": "Templating Language",
