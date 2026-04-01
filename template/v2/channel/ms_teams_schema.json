@@ -1,0 +1,75 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/ms_teams_schema.json",
+    "title": "MS Teams Channel Template",
+    "$comment": "MS Teams Channel Template",
+    "description": "Schema for MS Teams channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "default": "https://schema.suprsend.com/template/v2/channel/ms_teams_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "default": "handlebars",
+            "enum": [
+                "handlebars",
+                "jsonnet"
+            ]
+        },
+        "body_type": {
+            "title": "Body Type",
+            "type": "string",
+            "default": "text",
+            "enum": [
+                "text",
+                "card"
+            ]
+        },
+        "body_text": {
+            "title": "Body Text",
+            "type": "string",
+            "default": "",
+            "description": "message body if body_type='text'",
+            "maxLength": 4000
+        },
+        "body_card": {
+            "title": "Body Card",
+            "type": "string",
+            "default": "",
+            "description": "message body if body_type='card'",
+            "maxLength": 4000
+        }
+    },
+    "required": ["body_type"],
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "body_type": {
+                        "const": "text"
+                    }
+                }
+            },
+            "then": {
+                "required": ["body_text"]
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "body_type": {
+                        "const": "card"
+                    }
+                }
+            },
+            "then": {
+                "required": ["body_card"]
+            }
+        }
+    ]
+}

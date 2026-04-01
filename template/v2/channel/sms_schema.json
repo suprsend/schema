@@ -1,0 +1,66 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/sms_schema.json",
+    "title": "SMS Channel Template",
+    "$comment": "SMS Channel Template",
+    "description": "Schema for SMS channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "default": "https://schema.suprsend.com/template/v2/channel/sms_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "basic",
+            "enum": [
+                "dlt",
+                "basic"
+            ]
+        },
+        "category": {
+            "title": "Category",
+            "type": "string",
+            "description": "message category (if type='dlt'). possible values: [transactional/promotional/service_implicit]",
+            "enum": [
+                "transactional",
+                "promotional",
+                "service_implicit",
+                ""
+            ],
+            "maxLength": 16
+        },
+        "header": {
+            "title": "Header",
+            "type": "string",
+            "description": "message header (if type='dlt')",
+            "maxLength": 16
+        },
+        "body": {
+            "title": "Body",
+            "type": "string",
+            "description": "message body"
+        }
+    },
+    "required": ["type", "body"],
+    "if": {
+        "properties": {
+            "type": {
+                "const": "dlt"
+            }
+        },
+        "required": ["type"]
+    },
+    "then": {
+        "required": ["category", "header"]
+    }
+}

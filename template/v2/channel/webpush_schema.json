@@ -1,0 +1,144 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/webpush_schema.json",
+    "title": "Webpush Channel Template",
+    "$comment": "Webpush Channel Template",
+    "description": "Schema for Webpush channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "default": "https://schema.suprsend.com/template/v2/channel/webpush_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "header": {
+            "title": "Header",
+            "type": "string",
+            "description": "message title/header",
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "body": {
+            "title": "Body",
+            "type": "string",
+            "description": "message text/body",
+            "minLength": 1,
+            "maxLength": 4000
+        },
+        "icon_url": {
+            "title": "Icon Url",
+            "type": "string",
+            "default": "{{$brand.logo}}"
+        },
+        "image_url": {
+            "title": "Image Url",
+            "type": "string",
+            "description": "image url"
+        },
+        "action_url": {
+            "title": "Action Url",
+            "type": "string",
+            "description": "action url/deeplink"
+        },
+        "badge_url": {
+            "title": "Badge Url",
+            "type": "string",
+            "description": "badge url"
+        },
+        "dir": {
+            "title": "Dir",
+            "type": "string",
+            "default": "auto",
+            "enum": [
+                "auto",
+                "ltr",
+                "rtl"
+            ]
+        },
+        "vibrate": {
+            "title": "Vibrate",
+            "type": "array",
+            "default": [],
+            "items": {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+            }
+        },
+        "sound": {
+            "title": "Sound",
+            "type": "string"
+        },
+        "is_sticky": {
+            "title": "Is Sticky",
+            "type": "boolean",
+            "default": false
+        },
+        "is_silent": {
+            "title": "Is Silent",
+            "type": "boolean",
+            "default": false
+        },
+        "renotify": {
+            "title": "Renotify",
+            "type": "boolean",
+            "default": false
+        },
+        "group": {
+            "title": "Group",
+            "type": "string"
+        },
+        "lang": {
+            "title": "Lang",
+            "type": "string"
+        },
+        "buttons": {
+            "title": "Buttons",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/webpush_button_def"
+            },
+            "maxItems": 2
+        },
+        "extra_payload": {
+            "title": "Extra Payload",
+            "type": "object",
+            "additionalProperties": true,
+            "default": {},
+            "description": "extra payload. dict of key-value pairs"
+        }
+    },
+    "required": ["header", "body"],
+    "$defs": {
+        "webpush_button_def": {
+            "title": "webpush_button_def",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "url": {
+                    "title": "Url",
+                    "type": "string"
+                },
+                "icon": {
+                    "title": "Icon",
+                    "type": "string",
+                    "default": ""
+                }
+            },
+            "required": ["text", "url"]
+        }
+    }
+}

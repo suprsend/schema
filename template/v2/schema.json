@@ -1,0 +1,65 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/schema.json",
+    "title": "Template Schema V2",
+    "$comment": "Template Schema V2",
+    "description": "Template Schema V2",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "default": "https://schema.suprsend.com/template/v2/schema.json"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Template name"
+        },
+        "description": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "maxLength": 500,
+            "description": "Template description"
+        },
+        "tags": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "description": "optional tags for workflow",
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+            },
+            "maxItems": 25
+        },
+        "enabled_channels": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "description": "list of enabled channels for the template",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "email",
+                    "sms",
+                    "whatsapp",
+                    "inbox",
+                    "slack",
+                    "ms_teams",
+                    "androidpush",
+                    "iospush",
+                    "webpush"
+                ]
+            },
+            "maxItems": 10
+        }
+    }
+}

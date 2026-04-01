@@ -1,0 +1,84 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/iospush_schema.json",
+    "title": "Iospush Channel Template",
+    "$comment": "Iospush Channel Template",
+    "description": "Schema for Iospush channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "default": "https://schema.suprsend.com/template/v2/channel/iospush_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "header": {
+            "title": "Header",
+            "type": "string",
+            "description": "message title/header",
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "body": {
+            "title": "Body",
+            "type": "string",
+            "description": "message text/body",
+            "minLength": 1,
+            "maxLength": 4000
+        },
+        "image_url": {
+            "title": "Image Url",
+            "type": "string",
+            "default": "",
+            "description": "image url"
+        },
+        "action_url": {
+            "title": "Action Url",
+            "type": "string",
+            "description": "action url/deeplink"
+        },
+        "badge": {
+            "title": "Badge",
+            "type": "integer",
+            "default": 0,
+            "description": "badge count"
+        },
+        "sound": {
+            "title": "Sound",
+            "type": "string",
+            "default": "default"
+        },
+        "content_available": {
+            "title": "Content Available",
+            "type": "integer",
+            "default": 1
+        },
+        "mutable_content": {
+            "title": "Mutable Content",
+            "type": "integer",
+            "default": 1
+        },
+        "thread_identifier": {
+            "title": "Thread Identifier",
+            "type": "string",
+            "default": "{{$workflow.$category.slug}}"            
+        },
+        "notification_type": {
+            "title": "Notification Type",
+            "type": "string",
+            "default": "basic"
+        },
+        "via_suprsend": {
+            "title": "Via Suprsend",
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "required": ["header", "body"]
+}
