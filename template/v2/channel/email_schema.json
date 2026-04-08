@@ -1,0 +1,247 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/email_schema.json",
+    "title": "Email Channel Template",
+    "description": "Schema for email channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "format": "uri",
+            "const": "https://schema.suprsend.com/template/v2/channel/email_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "from_name": {
+            "title": "From Name",
+            "type": "string"
+        },
+        "from_address": {
+            "title": "From Email Address",
+            "type": "string"
+        },
+        "extra_to": {
+            "title": "Extra To, comma-separated email addresses",
+            "type": "string"
+        },
+        "cc": {
+            "title": "Cc, comma-separated email addresses",
+            "type": "string"
+        },
+        "bcc": {
+            "title": "Bcc, comma-separated email addresses",
+            "type": "string"
+        },
+        "reply_to": {
+            "title": "Reply To Email Address",
+            "type": "string"
+        },
+        "subject": {
+            "title": "Email subject line",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 998            
+        },
+        "body": {
+            "$ref": "#/$defs/email_body_def"
+        }
+    },
+    "required": ["subject", "body"],
+    "$defs": {
+        "email_body_def": {
+            "title": "email_body_def",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "default": "designer",
+                    "enum": [
+                        "raw",
+                        "designer",
+                        "plain_text"
+                    ]
+                },
+                "raw": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/raw_body_def"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "designer": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/designer_body_def"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "plain_text": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/plain_text_body_def"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "email_markup": {
+                    "title": "Email Markup",
+                    "type": "string"
+                },
+                "preheader": {
+                    "title": "Preheader",
+                    "type": "string"
+                }
+            },
+            "required": ["type"],
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "raw"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["raw"],
+                        "properties": {
+                            "raw": {
+                                "$ref": "#/$defs/raw_body_def"
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "designer"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["designer"],
+                        "properties": {
+                            "raw": {
+                                "$ref": "#/$defs/designer_body_def"
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "plain_text"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["plain_text"],
+                        "properties": {
+                            "raw": {
+                                "$ref": "#/$defs/plain_text_body_def"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "designer_body_def": {
+            "title": "designer_body_def",
+            "type": "object",
+            "properties": {
+                "html": {
+                    "title": "Html",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "design_json": {
+                    "title": "Design Json",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "display_conditions": {
+                    "title": "Display Conditions",
+                    "type": "array",
+                    "items": {}
+                },
+                "merge_tags": {
+                    "title": "Merge Tags",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/designer_body_merge_tag_def"
+                    }
+                }
+            },
+            "required": ["html"]
+        },
+        "designer_body_merge_tag_def": {
+            "title": "designer_body_merge_tag_def",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string"
+                },
+                "before": {
+                    "title": "Before",
+                    "type": "string"
+                },
+                "after": {
+                    "title": "After",
+                    "type": "string"
+                },
+                "expression": {
+                    "title": "Expression",
+                    "type": "string"
+                }
+            }
+        },
+        "plain_text_body_def": {
+            "title": "plain_text_body_def",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            },
+            "required": ["text"]
+        },
+        "raw_body_def": {
+            "title": "raw_body_def",
+            "type": "object",
+            "properties": {
+                "html": {
+                    "title": "Html",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            },
+            "required": ["html"]
+        }
+    }
+}

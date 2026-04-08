@@ -1,0 +1,75 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/slack_schema.json",
+    "title": "Slack Channel Template",
+    "$comment": "Slack Channel Template",
+    "description": "Schema for Slack channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "const": "https://schema.suprsend.com/template/v2/channel/slack_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "default": "handlebars",
+            "enum": [
+                "handlebars",
+                "jsonnet"
+            ]
+        },
+        "body_type": {
+            "title": "Body Type",
+            "type": "string",
+            "default": "text",
+            "enum": [
+                "text",
+                "block"
+            ]
+        },
+        "body_text": {
+            "title": "Body Text",
+            "type": "string",
+            "default": "",
+            "description": "message body if body_type='text'",
+            "maxLength": 4000
+        },
+        "body_block": {
+            "title": "Body Block",
+            "type": "string",
+            "default": "",
+            "description": "message body if body_type='block'",
+            "maxLength": 4000
+        }
+    },
+    "required": ["body_type"],
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "body_type": {
+                        "const": "text"
+                    }
+                }
+            },
+            "then": {
+                "required": ["body_text"]
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "body_type": {
+                        "const": "block"
+                    }
+                }
+            },
+            "then": {
+                "required": ["body_block"]
+            }
+        }
+    ]
+}

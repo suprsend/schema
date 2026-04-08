@@ -1,0 +1,215 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/inbox_schema.json",
+    "title": "Inbox Channel Template",
+    "$comment": "Inbox Channel Template",
+    "description": "Schema for inbox channel content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "const": "https://schema.suprsend.com/template/v2/channel/inbox_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "schema_version": {
+            "title": "Schema Version",
+            "type": "string",
+            "const": "1.0",
+            "default": "1.0"
+        },
+        "header": {
+            "title": "Header",
+            "type": "string",
+            "description": "Inbox message title/header",
+            "maxLength": 500
+        },
+        "body": {
+            "title": "Body",
+            "type": "string",
+            "description": "Inbox message text/body",
+            "minLength": 1
+        },
+        "action_url": {
+            "title": "Action Url",
+            "type": "string",
+            "default": "",
+            "description": "Inbox action url"
+        },
+        "open_in_new_tab": {
+            "title": "Open In New Tab",
+            "type": "boolean",
+            "default": false
+        },
+        "image_url": {
+            "title": "Image Url",
+            "type": "string",
+            "description": "Inbox action url"
+        },
+        "subtext": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/inbox_subtext_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "importance": {
+            "title": "Importance",
+            "type": "string",
+            "default": "default",
+            "enum": [
+                "default",
+                "high"
+            ]
+        },
+        "avatar": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/inbox_avatar_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "is_expiry_enabled": {
+            "title": "Is Expiry Enabled",
+            "type": "boolean",
+            "default": false
+        },
+        "expiry": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/inbox_expiry_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "is_pinned": {
+            "title": "Is Pinned",
+            "type": "boolean",
+            "default": false
+        },
+        "buttons": {
+            "title": "Buttons",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/inbox_button_def"
+            }
+        },
+        "extra_data": {
+            "title": "Extra Data",
+            "type": "string",
+            "default": "",
+            "description": "Inbox extra custom payload"
+        }
+    },
+    "required": ["body"],
+    "$defs": {
+        "inbox_avatar_def": {
+            "title": "inbox_avatar_def",
+            "type": "object",
+            "properties": {
+                "image_url": {
+                    "title": "Image Url",
+                    "type": "string",
+                    "default": ""
+                },
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "default": ""
+                }
+            }
+        },
+        "inbox_button_def": {
+            "title": "inbox_button_def",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "url": {
+                    "title": "Url",
+                    "type": "string"
+                },
+                "open_in_new_tab": {
+                    "title": "Open In New Tab",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "inbox_expiry_def": {
+            "title": "inbox_expiry_def",
+            "type": "object",
+            "properties": {
+                "format": {
+                    "title": "Format",
+                    "type": "string",
+                    "default": "relative",
+                    "enum": [
+                        "absolute",
+                        "relative"
+                    ]
+                },
+                "expiry_type": {
+                    "title": "Expiry Type",
+                    "type": "string",
+                    "default": "fixed",
+                    "enum": [
+                        "fixed",
+                        "dynamic"
+                    ]
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string",
+                    "description": "message expiry. e.g relative (XXdXXhXXmXXs), absolute (ISO datetime-fmt)",
+                    "maxLength": 500
+                },
+                "is_expiry_visible": {
+                    "title": "Is Expiry Visible",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "inbox_subtext_def": {
+            "title": "inbox_subtext_def",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "url": {
+                    "title": "Url",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
