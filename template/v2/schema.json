@@ -31,7 +31,7 @@
                 "array",
                 "null"
             ],
-            "description": "optional tags for workflow",
+            "description": "optional tags for template",
             "items": {
                 "type": "string",
                 "minLength": 1,
