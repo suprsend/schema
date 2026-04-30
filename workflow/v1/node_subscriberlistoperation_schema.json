@@ -25,7 +25,6 @@
         },
         "list_name": {
           "type": "string",
-          "minLength": 1,
           "description": "applicable when op=add_user & create_list_if_missing=true. A handlebars expression to derive list-name"
         },
         "user_selection": {
@@ -45,7 +44,7 @@
         "list_id",
         "user_selection"
       ],
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "subscriberlistoperation_adduser_props": {
       "$ref": "#/$definitions/subscriberlistoperation_props",

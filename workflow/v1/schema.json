@@ -51,7 +51,6 @@
         "minLength": 1,
         "maxLength": 255
       },
-      "minItems": 1,
       "maxItems": 10
     },
     "tags": {
@@ -99,7 +98,7 @@
       }
     },
     "override_recipients_type": {
-      "type": "string",
+      "type": ["string", "null"],
       "enum": [
         null,
         "user",
@@ -117,7 +116,7 @@
       "maxLength": 2048
     },
     "override_recipients_single_object_fields_expr": {
-      "type": "object",
+      "type": ["object", "null"],
       "description": "overrides original recipient with an object. object-type and id are evaluated using jq-expr (if override_recipients_type=single_object_fields)",
       "properties": {
         "object_type": {
@@ -138,7 +137,6 @@
             "null"
           ],
           "description": "a jq-expression to evaluate subscriptions_query.depth",
-          "minLength": 1,
           "maxLength": 2048
         }
       },

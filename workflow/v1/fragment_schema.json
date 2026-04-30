@@ -74,8 +74,7 @@
                   },
                   "value": {
                     "type": "string",
-                    "description": "RHS operand. for some of the operators RHS is not needed (e.g. EMPTY/NON_EMPTY etc.)",
-                    "minLength": 1
+                    "description": "RHS operand. for some of the operators RHS is not needed (e.g. EMPTY/NON_EMPTY etc.)"
                   }
                 },
                 "required": [
@@ -96,6 +95,13 @@
                   }
                 },
                 "then": {
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "RHS operand. for some of the operators RHS is not needed (e.g. EMPTY/NON_EMPTY etc.)"
+                    }
+                  },
                   "required": [
                     "value"
                   ]
