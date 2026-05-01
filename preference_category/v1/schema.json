@@ -44,7 +44,7 @@
         "description": "Commit timestamp. read only"
       }
     },
-    "required": ["categories"],
+    "required": ["root_categories"],
     "additionalProperties": true,
     "$definitions": {
       "root_category_def": {

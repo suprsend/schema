@@ -42,7 +42,7 @@
             "type": "string",
             "default": "",
             "description": "message body if body_type='card'",
-            "maxLength": 4000
+            "maxLength": 14000
         }
     },
     "required": ["body_type"],

@@ -138,7 +138,7 @@
                     "then": {
                         "required": ["designer"],
                         "properties": {
-                            "raw": {
+                            "designer": {
                                 "$ref": "#/$defs/designer_body_def"
                             }
                         }
@@ -155,7 +155,7 @@
                     "then": {
                         "required": ["plain_text"],
                         "properties": {
-                            "raw": {
+                            "plain_text": {
                                 "$ref": "#/$defs/plain_text_body_def"
                             }
                         }

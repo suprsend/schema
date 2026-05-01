@@ -42,7 +42,7 @@
             "type": "string",
             "default": "",
             "description": "message body if body_type='block'",
-            "maxLength": 4000
+            "maxLength": 13200
         }
     },
     "required": ["body_type"],

@@ -35,7 +35,7 @@
           "description": "specific channels to use when sending multi-channel notification"
         },
         "channels_expr": {
-          "type": "string",
+          "type": ["string", "null"],
           "minLength": 2,
           "description": "jq-expression for preparing channel list, if channels are to be derived at runtime using payload"
         },
@@ -69,7 +69,7 @@
       "required": [
         "template"
       ],
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "send_multi_channel_props": {
       "$ref": "#/$definitions/send_node_props"

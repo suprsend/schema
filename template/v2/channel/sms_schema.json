@@ -35,6 +35,7 @@
                 "transactional",
                 "promotional",
                 "service_implicit",
+                "service_explicit",
                 ""
             ],
             "maxLength": 16
