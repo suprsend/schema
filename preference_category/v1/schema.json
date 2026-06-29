@@ -174,9 +174,280 @@
               "pattern": "^[a-z0-9_\\-.:]+$"
             },
             "maxItems": 25
+          },
+          "digest_schedule": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "$ref": "#/$definitions/digest_schedule_def"
+              }
+            ],
+            "description": "Digest schedule config for the category. If null, digest is not configured."
+          },
+          "properties": {
+            "type": ["array", "null"],
+            "description": "Properties defined at the category. If null, no properties are configured.",
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/$definitions/cat_property_def"
+            }
           }
         },
         "required": ["name", "default_preference"],
+        "additionalProperties": true
+      },
+      "digest_schedule_def": {
+        "type": "object",
+        "description": "Digest schedule config for the category",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether digest schedule is enabled for this category"
+          },
+          "options": {
+            "type": "array",
+            "description": "Available digest schedule options. Exactly one option must have is_default=true.",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/$definitions/digest_schedule_option_def"
+            }
+          }
+        },
+        "required": ["enabled", "options"],
+        "additionalProperties": true
+      },
+      "digest_schedule_option_def": {
+        "type": "object",
+        "description": "DigestSchedule Option Definition",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Slug identifying the option. Auto-derived from label when omitted.",
+            "maxLength": 64,
+            "pattern": "^[a-z0-9_\\-]+$"
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label for the option",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "frequency": {
+            "type": "string",
+            "description": "Digest frequency",
+            "enum": [
+              "instantly",
+              "minutely",
+              "hourly",
+              "daily",
+              "weekly_mo2fr",
+              "weekly",
+              "monthly"
+            ]
+          },
+          "interval": {
+            "type": ["integer", "null"],
+            "description": "Repeat interval for the frequency (defaults to 1)",
+            "minimum": 0
+          },
+          "time": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "$ref": "#/$definitions/digest_field_config_string_def"
+              }
+            ],
+            "description": "Time-of-day config (HH:MM)"
+          },
+          "weekdays": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "$ref": "#/$definitions/digest_field_config_weekdays_def"
+              }
+            ],
+            "description": "Weekdays config (used for weekly/weekly_mo2fr)"
+          },
+          "monthdays": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "$ref": "#/$definitions/digest_field_config_monthdays_def"
+              }
+            ],
+            "description": "Monthdays config (used for monthly)"
+          },
+          "dtstart": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "$ref": "#/$definitions/digest_field_config_string_def"
+              }
+            ],
+            "description": "Schedule start datetime config (YYYY-MM-DDTHH:MM:SS)"
+          },
+          "is_default": {
+            "type": "boolean",
+            "description": "Whether this option is the default selection"
+          }
+        },
+        "required": ["label", "frequency"],
+        "additionalProperties": true
+      },
+      "digest_field_config_string_def": {
+        "type": "object",
+        "description": "DigestSchedule Field Config of string type",
+        "properties": {
+          "edit_policy": {
+            "type": "string",
+            "enum": ["locked", "editable"],
+            "description": "Whether the value can be overridden by end subscriber"
+          },
+          "default_value": {
+            "type": "string",
+            "description": "Default value for the field"
+          }
+        },
+        "required": ["edit_policy", "default_value"],
+        "additionalProperties": true
+      },
+      "digest_field_config_weekdays_def": {
+        "type": "object",
+        "description": "DigestSchedule Field Config for weekdays",
+        "properties": {
+          "edit_policy": {
+            "type": "string",
+            "enum": ["locked", "editable"],
+            "description": "Whether the value can be overridden by end subscriber"
+          },
+          "default_value": {
+            "type": "array",
+            "description": "Default weekdays",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["su", "mo", "tu", "we", "th", "fr", "sa"]
+            }
+          }
+        },
+        "required": ["edit_policy", "default_value"],
+        "additionalProperties": true
+      },
+      "digest_field_config_monthdays_def": {
+        "type": "object",
+        "description": "DigestSchedule Field Config for monthly frequency",
+        "properties": {
+          "edit_policy": {
+            "type": "string",
+            "enum": ["locked", "editable"],
+            "description": "Whether the value can be overridden by end subscriber"
+          },
+          "default_value": {
+            "type": "array",
+            "description": "Default monthdays",
+            "items": {
+              "$ref": "#/$definitions/schedule_monthday_def"
+            }
+          }
+        },
+        "required": ["edit_policy", "default_value"],
+        "additionalProperties": true
+      },
+      "schedule_monthday_def": {
+        "type": "object",
+        "description": "ScheduleMonthday",
+        "properties": {
+          "pos": {
+            "type": "integer",
+            "description": "Position within the month. Absolute day: [-31..-1] or [1..31]; relative to a weekday: [-5..-1] or [1..5]."
+          },
+          "day": {
+            "type": "string",
+            "description": "Weekday for relative positioning. Omit/empty for an absolute day-of-month.",
+            "enum": ["su", "mo", "tu", "we", "th", "fr", "sa"]
+          }
+        },
+        "required": ["pos"],
+        "additionalProperties": true
+      },
+      "cat_property_def": {
+        "type": "object",
+        "description": "Category Property definition",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Property key. Must start with a letter or underscore and contain only letters, numbers, and underscores.",
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+          },
+          "label": {
+            "type": ["string", "null"],
+            "description": "Human-readable label",
+            "maxLength": 256
+          },
+          "value_type": {
+            "type": "string",
+            "description": "Type of the Property value",
+            "enum": [
+              "integer",
+              "string",
+              "string_choice",
+              "list_choice",
+              "string_dynamic",
+              "list_dynamic"
+            ]
+          },
+          "choices": {
+            "type": ["array", "null"],
+            "description": "Allowed choices (required for string_choice/list_choice value types)",
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/$definitions/cat_property_choice_def"
+            }
+          },
+          "dynamic_choices_key": {
+            "type": ["string", "null"],
+            "description": "key using which choices can be populated on client-side (only for string_dynamic/list_dynamic value types)"
+          },
+          "default_value": {
+            "type": ["integer", "string", "array", "null"],
+            "description": "Default value. integer for 'integer'; string for 'string'/'string_choice'; array of strings for 'list_choice'; null for dynamic types.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_optional": {
+            "type": "boolean",
+            "description": "Whether value is optional. if yes, null/empty is allowed as valid value"
+          },
+          "edit_policy": {
+            "type": "string",
+            "enum": ["locked", "editable"],
+            "description": "Whether the value can be overridden by the end user"
+          }
+        },
+        "required": ["key", "value_type", "edit_policy"],
+        "additionalProperties": true
+      },
+      "cat_property_choice_def": {
+        "type": "object",
+        "description": "CategoryProperty Choices",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Choice label",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "value": {
+            "type": "string",
+            "description": "Choice value",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": ["label", "value"],
         "additionalProperties": true
       }
     }

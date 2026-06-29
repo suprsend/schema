@@ -10,7 +10,8 @@
       "type": "string",
       "enum": [
         "static",
-        "dynamic"
+        "dynamic",
+        "category_digest_schedule"
       ]
     },
     "dynamic_schedule_expr": {
@@ -212,8 +213,17 @@
     ]
   },
   "else": {
-    "required": [
-      "dynamic_schedule_expr"
-    ]
+    "if": {
+      "properties": {
+        "schedule_type": {
+          "const": "dynamic"
+        }
+      }
+    },
+    "then": {
+      "required": [
+        "dynamic_schedule_expr"
+      ]
+    }
   }
 }
