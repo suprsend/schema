@@ -42,6 +42,7 @@
                       "$recipient",
                       "$brand",
                       "$organization",
+                      "$category",
                       "$future_event"
                     ],
                     "description": "namespace for the variable on LHS of a plain expression"
@@ -155,6 +156,7 @@
                       "$recipient",
                       "$brand",
                       "$organization",
+                      "$category",
                       "$future_event",
                       "$ref"
                     ],
