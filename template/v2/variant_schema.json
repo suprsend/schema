@@ -376,6 +376,7 @@
                                             "$actor",
                                             "$recipient",
                                             "$brand",
+                                            "$tenant",
                                             "$organization"
                                         ],
                                         "description": "namespace for the variable on LHS of a plain expression"
