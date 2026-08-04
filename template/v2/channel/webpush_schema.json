@@ -35,7 +35,7 @@
         "icon_url": {
             "title": "Icon Url",
             "type": "string",
-            "default": "{{$brand.logo}}"
+            "default": "{{$tenant.logo}}"
         },
         "image_url": {
             "title": "Image Url",

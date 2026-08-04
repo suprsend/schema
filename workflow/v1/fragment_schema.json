@@ -41,6 +41,7 @@
                       "$actor",
                       "$recipient",
                       "$brand",
+                      "$tenant",
                       "$organization",
                       "$category",
                       "$future_event"
@@ -155,6 +156,7 @@
                       "$actor",
                       "$recipient",
                       "$brand",
+                      "$tenant",
                       "$organization",
                       "$category",
                       "$future_event",
