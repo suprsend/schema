@@ -166,6 +166,14 @@
       "minLength": 2,
       "maxLength": 2048
     },
+    "cancellation_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1024,
+      "description": "JSONNET expression evaluated at trigger time to set a cancellation key for this workflow run"
+    },
     "tree": {
       "type": "object",
       "properties": {

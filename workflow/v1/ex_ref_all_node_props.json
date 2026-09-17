@@ -60,6 +60,9 @@
     "node_invokeworkflow_props": {
       "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
     },
+    "node_cancelworkflow_props": {
+      "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/cancelworkflow_props"
+    },
     "node_userupdate_props": {
       "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/userupdate_props"
     },

@@ -104,6 +104,14 @@
         "append_current_run_data": {
           "type": "boolean",
           "description": "should current workflow-run data be merged with the data field"
+        },
+        "cancellation_key": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1024,
+          "description": "JSONNET expression evaluated against current run data; passed as cancellation_key of the invoked workflow run"
         }
       },
       "required": [
@@ -141,6 +149,112 @@
             "required": [
               "recipient_expression"
             ]
+          }
+        }
+      ]
+    },
+    "cancelworkflow_props": {
+      "type": "object",
+      "properties": {
+        "workflows": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "maxItems": 20,
+          "uniqueItems": true,
+          "description": "slugs of workflows whose in-progress runs should be cancelled. null/empty = no slug filter",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "^[a-z0-9-_]+$"
+          }
+        },
+        "recipient_selection": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "",
+            "recipient",
+            "actor",
+            "expression"
+          ],
+          "description": "filter cancelled runs by recipient. empty/null = no recipient filter"
+        },
+        "recipient_expression": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "description": "if recipient_selection=expression, a JSONNET expression to derive recipient at runtime"
+        },
+        "cancellation_key": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1024,
+          "description": "JSONNET expression to match runs by cancellation key. empty/null = no key filter"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "recipient_selection"
+            ],
+            "properties": {
+              "recipient_selection": {
+                "const": "expression"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "recipient_expression"
+            ]
+          }
+        }
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "workflows"
+          ],
+          "properties": {
+            "workflows": {
+              "type": "array",
+              "minItems": 1
+            }
+          }
+        },
+        {
+          "required": [
+            "recipient_selection"
+          ],
+          "properties": {
+            "recipient_selection": {
+              "enum": [
+                "recipient",
+                "actor",
+                "expression"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "cancellation_key"
+          ],
+          "properties": {
+            "cancellation_key": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       ]
