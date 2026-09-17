@@ -1,0 +1,40 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/cli/template/v2/schema.json",
+    "title": "SuprSend CLI template.json",
+    "description": "On-disk shape of `template.json` written by `suprsend template pull`. Composes the upstream template body schema and adds CLI-only fields (slug, variant_order).",
+    "type": "object",
+    "allOf": [
+        { "$ref": "https://schema.suprsend.com/template/v2/schema.json" }
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "format": "uri",
+            "const": "https://schema.suprsend.com/cli/template/v2/schema.json"
+        },
+        "slug": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9_\\-.]+$",
+            "description": "Template slug — stable identifier used in API paths and filesystem layout."
+        },
+        "variant_order": {
+            "type": "object",
+            "description": "Ordered variant IDs per channel (or per channel+tenant via `<channel>/<tenantID>` keys). Keys mirror the on-disk path.",
+            "propertyNames": {
+                "pattern": "^(email|sms|whatsapp|inbox|slack|ms_teams|androidpush|iospush|webpush)(/[a-zA-Z0-9_\\-]+)?$"
+            },
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-zA-Z0-9_\\-.]+$"
+                }
+            }
+        }
+    },
+    "required": ["slug", "name", "enabled_channels", "variant_order"]
+}

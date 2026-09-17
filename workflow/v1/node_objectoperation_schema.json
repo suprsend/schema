@@ -52,7 +52,7 @@
         "object_id",
         "user_selection"
       ],
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "objectoperation_addsubscription_props": {
       "$ref": "#/$definitions/objectoperation_props",

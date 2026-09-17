@@ -1,0 +1,290 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://schema.suprsend.com/template/v2/channel/whatsapp_basic_interactive_schema.json",
+    "title": "Whatsapp basic interactive Template Content",
+    "$comment": "Whatsapp basic interactive Template Content",
+    "description": "Schema for Whatsapp basic interactive template content validation",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "title": "$Schema",
+            "type": "string",
+            "format": "uri",
+            "const": "https://schema.suprsend.com/template/v2/channel/whatsapp_basic_interactive_schema.json"
+        },
+        "templating_language": {
+            "title": "Templating Language",
+            "type": "string",
+            "const": "handlebars",
+            "default": "handlebars"
+        },
+        "category": {
+            "title": "Category",
+            "type": "string",
+            "default": "UTILITY",
+            "enum": [
+                "UTILITY",
+                "MARKETING"
+            ]
+        },
+        "subcategory": {
+            "title": "Subcategory",
+            "type": "string",
+            "const": "basic_interactive",
+            "default": "basic_interactive"
+        },
+        "header": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/whatsapp_basic_interactive_header_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "body": {    
+            "$ref": "#/$defs/whatsapp_basic_interactive_body_def"
+        },
+        "footer": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/whatsapp_basic_interactive_footer_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "button_type": {
+            "title": "Button Type",
+            "type": "string",
+            "default": "NONE",
+            "enum": [
+                "CALL_TO_ACTION",
+                "QUICK_REPLY",
+                "NONE"
+            ]
+        },
+        "buttons": {
+            "title": "Buttons",
+            "type": "array",
+            "items": {
+                "discriminator": {
+                    "mapping": {
+                        "PHONE_NUMBER": "#/$defs/PhoneNumberButton",
+                        "QUICK_REPLY": "#/$defs/QuickReplyButton",
+                        "URL": "#/$defs/UrlButton"
+                    },
+                    "propertyName": "type"
+                },
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/PhoneNumberButton"
+                    },
+                    {
+                        "$ref": "#/$defs/UrlButton"
+                    },
+                    {
+                        "$ref": "#/$defs/QuickReplyButton"
+                    }
+                ]
+            }
+        }
+    },
+    "required": ["category", "subcategory", "body"],
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "button_type": {
+                        "enum": ["CALL_TO_ACTION", "QUICK_REPLY"]
+                    }
+                }
+            },
+            "then": {
+                "required": ["buttons"],
+                "properties": {
+                    "buttons": {
+                        "type": "array",
+                        "minItems": 1
+                    }
+                }
+            }
+        }
+    ],
+    "$defs": {
+        "PhoneNumberButton": {
+            "title": "PhoneNumberButton",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "const": "PHONE_NUMBER"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "phone_number": {
+                    "title": "Phone Number",
+                    "type": "string",
+                    "minLength": 8
+                }
+            },
+            "required": ["type", "text", "phone_number"]
+        },
+        "QuickReplyButton": {
+            "title": "QuickReplyButton",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "const": "QUICK_REPLY"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": ["type", "text"]
+        },
+        "UrlButton": {
+            "title": "UrlButton",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "const": "URL"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "url_type": {
+                    "title": "Url Type",
+                    "type": "string",
+                    "default": "static",
+                    "enum": [
+                        "dynamic",
+                        "static"
+                    ]
+                },
+                "url_static_part": {
+                    "title": "Url Static Part",
+                    "type": "string"
+                },
+                "url_dynamic_part": {
+                    "title": "Url Dynamic Part",
+                    "type": "string",
+                    "default": ""
+                }
+            },
+            "required": [
+                "type", "text", "url_type", "url_static_part"
+            ],
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "url_type": {
+                                "const": "dynamic"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["url_dynamic_part"]
+                    }
+                }
+            ]
+        },
+        "whatsapp_basic_interactive_body_def": {
+            "title": "whatsapp_basic_interactive_body_def",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            },
+            "required": ["text"]
+        },
+        "whatsapp_basic_interactive_footer_def": {
+            "title": "whatsapp_basic_interactive_footer_def",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            },
+            "required": ["text"]
+        },
+        "whatsapp_basic_interactive_header_def": {
+            "title": "whatsapp_basic_interactive_header_def",
+            "type": "object",
+            "properties": {
+                "format": {
+                    "title": "Format",
+                    "type": "string",
+                    "default": "TEXT",
+                    "enum": ["TEXT", "DOCUMENT", "IMAGE", "VIDEO"]
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                },
+                "media_url": {
+                    "title": "Media Url",
+                    "type": "string",
+                    "minLength": 0
+                },
+                "filename": {
+                    "title": "Filename",
+                    "type": "string"
+                }
+            },
+            "required": ["format"],
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "format": {
+                                "const": "TEXT"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["text"]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "format": {
+                                "enum": ["DOCUMENT", "IMAGE", "VIDEO"]
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": ["media_url"],
+                        "properties": {
+                            "media_url": {
+                                "title": "Media Url",
+                                "type": "string",
+                                "minLength": 5
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

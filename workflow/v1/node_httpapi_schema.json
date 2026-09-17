@@ -53,7 +53,10 @@
           ]
         },
         "body": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1,
           "description": "JSONNET script to evaluate request body"
         },
