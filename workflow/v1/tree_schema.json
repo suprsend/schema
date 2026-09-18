@@ -44,6 +44,7 @@
             "send_ms_teams",
             "transform",
             "invokeworkflow",
+            "cancelworkflow",
             "userupdate",
             "subscriberlistoperation_adduser",
             "subscriberlistoperation_removeuser",
@@ -428,6 +429,25 @@
             "properties": {
               "properties": {
                 "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/invokeworkflow_props"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "node_type": {
+                "const": "cancelworkflow"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "properties"
+            ],
+            "properties": {
+              "properties": {
+                "$ref": "https://schema.suprsend.com/workflow/v1/node_other_funcs_schema.json#/$definitions/cancelworkflow_props"
               }
             }
           }
