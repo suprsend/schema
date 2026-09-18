@@ -161,7 +161,7 @@
           ],
           "maxItems": 20,
           "uniqueItems": true,
-          "description": "slugs of workflows whose in-progress runs should be cancelled. null/empty = no slug filter",
+          "description": "slugs of workflows whose in-progress runs should be cancelled. null/empty = no workflow filter",
           "items": {
             "type": "string",
             "minLength": 1,
@@ -181,13 +181,15 @@
             "actor",
             "expression"
           ],
-          "description": "filter cancelled runs by recipient. empty/null = no recipient filter"
+          "description": "recipient filter for in-progress executions to be cancelled. empty/null = no recipient filter"
         },
         "recipient_expression": {
-          "type": "string",
-          "minLength": 1,
+          "type": [
+            "string",
+            "null"
+          ],
           "maxLength": 1024,
-          "description": "if recipient_selection=expression, a JSONNET expression to derive recipient at runtime"
+          "description": "JSONNET expression to derive recipient at runtime. required non-empty string if recipient_selection=expression; otherwise empty/null is allowed"
         },
         "cancellation_key": {
           "type": [
@@ -214,7 +216,14 @@
           "then": {
             "required": [
               "recipient_expression"
-            ]
+            ],
+            "properties": {
+              "recipient_expression": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              }
+            }
           }
         }
       ],
