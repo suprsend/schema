@@ -65,7 +65,34 @@
           }
         },
         "required": ["root_category"],
-        "additionalProperties": true
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "required": ["root_category"],
+              "properties": {
+                "root_category": { "const": "system" }
+              }
+            },
+            "then": {
+              "properties": {
+                "sections": {
+                  "items": {
+                    "properties": {
+                      "categories": {
+                        "items": {
+                          "properties": {
+                            "is_commercial": { "not": { "const": true } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       },
       "section_def": {
         "type": "object",
@@ -191,10 +218,29 @@
             "items": {
               "$ref": "#/$definitions/cat_property_def"
             }
+          },
+          "is_commercial": {
+            "type": ["boolean", "null"],
+            "description": "Whether one-click unsubscribe headers are emitted for this category. When omitted or null, a promotional category defaults to true and a transactional or system category defaults to false. System categories cannot be marked commercial. A category with default_preference=cant_unsubscribe cannot be marked commercial."
           }
         },
         "required": ["name", "default_preference"],
-        "additionalProperties": true
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "required": ["default_preference"],
+              "properties": {
+                "default_preference": { "const": "cant_unsubscribe" }
+              }
+            },
+            "then": {
+              "properties": {
+                "is_commercial": { "not": { "const": true } }
+              }
+            }
+          }
+        ]
       },
       "digest_schedule_def": {
         "type": "object",
