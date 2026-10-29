@@ -112,6 +112,18 @@
             "additionalProperties": true,
             "default": {},
             "description": "extra payload. dict of key-value pairs"
+        },
+        "ttl": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/webpush_ttl_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "push message time-to-live. Optional; when missing or null, defaults to 1h at send time"
         }
     },
     "required": ["header", "body"],
@@ -139,6 +151,29 @@
                 }
             },
             "required": ["text", "url"]
+        },
+        "webpush_ttl_def": {
+            "title": "webpush_ttl_def",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "type": "string",
+                    "description": "fixed: value is a relative duration. dynamic: value is a Handlebars expression rendered from trigger data at send time",
+                    "enum": [
+                        "fixed",
+                        "dynamic"
+                    ]
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string",
+                    "description": "ttl value. e.g fixed: relative duration (XXdXXhXXmXXs), between 1s and 28d, 0 not allowed, each part in range (e.g. 60m, 25h invalid); dynamic: Handlebars expression (e.g. {{data.push_ttl}})",
+                    "minLength": 1,
+                    "maxLength": 500
+                }
+            },
+            "required": ["type", "value"]
         }
     }
 }
