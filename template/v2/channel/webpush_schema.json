@@ -126,15 +126,16 @@
             "description": "push message time-to-live. Optional. Stored null when missing or empty. Send-time default is 1h when stored null"
         },
         "urgency": {
-            "anyOf": [
-                {
-                    "$ref": "#/$defs/webpush_urgency_def"
-                },
-                {
-                    "type": "null"
-                }
+            "title": "Urgency",
+            "type": "string",
+            "default": "normal",
+            "enum": [
+                "very-low",
+                "low",
+                "normal",
+                "high"
             ],
-            "description": "push message urgency (RFC 8030 section 5.3). Optional. Stored null when missing. Send-time default is normal when stored null. Static value only"
+            "description": "push message urgency (RFC 8030 section 5.3). Static value only."
         }
     },
     "required": ["header", "body"],
@@ -185,17 +186,6 @@
                     "maxLength": 500
                 }
             }
-        },
-        "webpush_urgency_def": {
-            "title": "webpush_urgency_def",
-            "type": "string",
-            "enum": [
-                "very-low",
-                "low",
-                "normal",
-                "high"
-            ],
-            "description": "Urgency header value. Exactly one of very-low, low, normal, high. Not a handlebars expression and not a fixed/dynamic object"
         }
     }
 }
