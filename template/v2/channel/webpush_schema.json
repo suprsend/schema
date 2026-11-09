@@ -123,7 +123,7 @@
                 }
             ],
             "default": null,
-            "description": "push message time-to-live. Optional; when missing or null, defaults to 1h at send time"
+            "description": "push message time-to-live. Optional. Stored null when missing or empty. Send-time default is 1h when stored null"
         }
     },
     "required": ["header", "body"],
@@ -157,23 +157,23 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "title": "Type",
+                    "title": "TTL Type",
                     "type": "string",
-                    "description": "fixed: value is a relative duration. dynamic: value is a Handlebars expression rendered from trigger data at send time",
+                    "default": "fixed",
                     "enum": [
                         "fixed",
                         "dynamic"
-                    ]
+                    ],
+                    "description": "fixed: value is a relative duration. dynamic: value is resolved at send time and is not checked as a duration"
                 },
                 "value": {
                     "title": "Value",
                     "type": "string",
-                    "description": "ttl value. e.g fixed: relative duration (XXdXXhXXmXXs), between 1s and 28d, 0 not allowed, each part in range (e.g. 60m, 25h invalid); dynamic: Handlebars expression (e.g. {{data.push_ttl}})",
-                    "minLength": 1,
+                    "default": "",
+                    "description": "fixed: relative duration (XXdXXhXXmXXs), 1s..28d. dynamic: resolved at send time, not checked as a duration",
                     "maxLength": 500
                 }
-            },
-            "required": ["type", "value"]
+            }
         }
     }
 }
