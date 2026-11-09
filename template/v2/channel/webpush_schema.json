@@ -112,6 +112,18 @@
             "additionalProperties": true,
             "default": {},
             "description": "extra payload. dict of key-value pairs"
+        },
+        "ttl": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/webpush_ttl_def"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "push message time-to-live. Optional. Stored null when missing or empty. Send-time default is 1h when stored null"
         }
     },
     "required": ["header", "body"],
@@ -139,6 +151,29 @@
                 }
             },
             "required": ["text", "url"]
+        },
+        "webpush_ttl_def": {
+            "title": "webpush_ttl_def",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "TTL Type",
+                    "type": "string",
+                    "default": "fixed",
+                    "enum": [
+                        "fixed",
+                        "dynamic"
+                    ],
+                    "description": "fixed: value is a relative duration. dynamic: value is resolved at send time and is not checked as a duration"
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string",
+                    "default": "",
+                    "description": "fixed: relative duration (XXdXXhXXmXXs), 1s..28d. dynamic: resolved at send time, not checked as a duration",
+                    "maxLength": 500
+                }
+            }
         }
     }
 }
