@@ -51,14 +51,15 @@
         },
         "headers": {
             "title": "Custom Email Headers",
-            "description": "Optional per-message custom email headers (for example In-Reply-To and References for Gmail/Outlook threading). Values are Handlebars template strings, same as subject.",
+            "description": "Optional per-message custom email headers (for example In-Reply-To and References for Gmail/Outlook threading). At most 5 headers. Name and value are required and must not be blank. Values are Handlebars template strings, same as subject, at most 900 characters.",
             "type": "array",
-            "maxItems": 10,
+            "maxItems": 5,
             "items": {
                 "type": "object",
                 "properties": {
                     "name": {
                         "title": "Header Name",
+                        "description": "Required, non-blank RFC 5322 field-name token.",
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 64,
@@ -66,10 +67,11 @@
                     },
                     "value": {
                         "title": "Header Value",
-                        "description": "Handlebars template string for the header value. Must not contain CR or LF.",
+                        "description": "Required, non-blank Handlebars template string for the header value, at most 900 characters. Must not contain CR or LF.",
                         "type": "string",
-                        "maxLength": 998,
-                        "pattern": "^[^\\r\\n]*$"
+                        "minLength": 1,
+                        "maxLength": 900,
+                        "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$"
                     }
                 },
                 "required": ["name", "value"],
