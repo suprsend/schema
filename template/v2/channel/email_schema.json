@@ -48,6 +48,33 @@
         },
         "body": {
             "$ref": "#/$defs/email_body_def"
+        },
+        "headers": {
+            "title": "Custom Email Headers",
+            "description": "Optional per-message custom email headers (for example In-Reply-To and References for Gmail/Outlook threading). Values are Handlebars template strings, same as subject.",
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "title": "Header Name",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "pattern": "^[!-9;-~]+$"
+                    },
+                    "value": {
+                        "title": "Header Value",
+                        "description": "Handlebars template string for the header value. Must not contain CR or LF.",
+                        "type": "string",
+                        "maxLength": 998,
+                        "pattern": "^[^\\r\\n]*$"
+                    }
+                },
+                "required": ["name", "value"],
+                "additionalProperties": false
+            }
         }
     },
     "required": ["subject", "body"],
