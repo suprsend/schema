@@ -130,7 +130,6 @@
             "type": "string",
             "default": "normal",
             "enum": [
-                "very-low",
                 "low",
                 "normal",
                 "high"
