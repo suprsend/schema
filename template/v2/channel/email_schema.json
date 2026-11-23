@@ -51,23 +51,24 @@
         },
         "headers": {
             "title": "Custom Email Headers",
-            "description": "Optional per-message custom email headers (for example In-Reply-To and References for Gmail/Outlook threading). At most 5 headers. Name and value are required and must not be blank. Values are Handlebars template strings, same as subject, at most 900 characters.",
+            "description": "Optional per-message email headers for Gmail/Outlook threading. Only In-Reply-To and References are allowed, at most once each. Name and value are required and must not be blank. Values are Handlebars template strings, same as subject, at most 900 characters.",
             "type": "array",
-            "maxItems": 5,
+            "maxItems": 2,
             "items": {
                 "type": "object",
                 "properties": {
                     "name": {
                         "title": "Header Name",
-                        "description": "Required, non-blank RFC 5322 field-name token.",
+                        "description": "Allowed header name. Only In-Reply-To and References.",
                         "type": "string",
-                        "minLength": 1,
-                        "maxLength": 64,
-                        "pattern": "^[!-9;-~]+$"
+                        "enum": [
+                            "In-Reply-To",
+                            "References"
+                        ]
                     },
                     "value": {
                         "title": "Header Value",
-                        "description": "Required, non-blank Handlebars template string for the header value, at most 900 characters. Must not contain CR or LF.",
+                        "description": "Required, non-blank Handlebars template string for the header value, at most 900 characters. Must not contain CR or LF. In-Reply-To is one message id in angle brackets, for example <message-id>. References is one or more message ids in angle brackets, separated by spaces, for example <message-id> <message-id>.",
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 900,
@@ -76,7 +77,35 @@
                 },
                 "required": ["name", "value"],
                 "additionalProperties": false
-            }
+            },
+            "allOf": [
+                {
+                    "contains": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "const": "In-Reply-To"
+                            }
+                        },
+                        "required": ["name"]
+                    },
+                    "minContains": 0,
+                    "maxContains": 1
+                },
+                {
+                    "contains": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "const": "References"
+                            }
+                        },
+                        "required": ["name"]
+                    },
+                    "minContains": 0,
+                    "maxContains": 1
+                }
+            ]
         }
     },
     "required": ["subject", "body"],
