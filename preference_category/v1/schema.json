@@ -102,11 +102,10 @@
             "description": "Section name"
           },
           "slug": {
-            "description": "Identity slug of the section. Maximum length is 128. When omitted or null, the server derives it from name. An explicit value is lowercase letters and digits separated by a single hyphen or underscore, such as order-updates. The section update API leaves the stored slug unchanged. A preference-category replace stores this value, so send the existing slug when the name changes.",
+            "description": "Identity slug of the section. Maximum length is 128. When omitted, null, or empty, the server derives it from name. An explicit value is lowercase letters and digits separated by a single hyphen or underscore, such as order-updates. The section update API leaves the stored slug unchanged. A preference-category replace stores this value, so send the existing slug when the name changes.",
             "type": ["string", "null"],
-            "minLength": 1,
             "maxLength": 128,
-            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"
+            "pattern": "^$|^[a-z0-9]+(?:[-_][a-z0-9]+)*$"
           },
           "description": {
             "type": ["string", "null"],
@@ -150,11 +149,10 @@
             "description": "category description"
           },
           "category": {
-            "description": "Identity slug of the category. Maximum length is 128. When omitted or null, the server derives it from name. An explicit value is lowercase letters and digits separated by a single hyphen or underscore, such as order-updates. It must not be system, transactional, or promotional. The category update API leaves the stored slug unchanged. A preference-category replace stores this value, so send the existing slug when the name changes.",
+            "description": "Identity slug of the category. Maximum length is 128. When omitted, null, or empty, the server derives it from name. An explicit value is lowercase letters and digits separated by a single hyphen or underscore, such as order-updates. It must not be system, transactional, or promotional. The category update API leaves the stored slug unchanged. A preference-category replace stores this value, so send the existing slug when the name changes.",
             "type": ["string", "null"],
-            "minLength": 1,
             "maxLength": 128,
-            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$",
+            "pattern": "^$|^[a-z0-9]+(?:[-_][a-z0-9]+)*$",
             "not": { "enum": ["system", "transactional", "promotional"] }
           },
           "default_preference": {
